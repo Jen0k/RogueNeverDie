@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RogueNeverDie.Engine;
 
 namespace RogueNeverDie
 {
@@ -9,12 +10,15 @@ namespace RogueNeverDie
     /// </summary>
     public class GameRogue : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        protected GraphicsDeviceManager graphics;
+		protected SpriteBatch spriteBatch;
+
+		StateManager stateManager;
 
         public GameRogue()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
         }
 
@@ -26,7 +30,8 @@ namespace RogueNeverDie
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+			// TODO: Add your initialization logic here
+			stateManager = new StateManager();
 
             base.Initialize();
         }
@@ -59,6 +64,8 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+			stateManager.Update(gameTime);
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
