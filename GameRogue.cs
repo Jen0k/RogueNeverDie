@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RogueNeverDie.Engine;
+using RogueNeverDie.Engine.Common;
+using RogueNeverDie.Engine.GameObjects;
 
 namespace RogueNeverDie
 {
@@ -12,9 +15,14 @@ namespace RogueNeverDie
     {
         protected GraphicsDeviceManager graphics;
 		protected SpriteBatch spriteBatch;
+        
+		protected SpriteFont commonFont;
 
-		StateManager stateManager;
-
+		protected Texture2D sonicTex;
+		protected Sprite test;
+        
+		protected StateManager stateManager;
+              
         public GameRogue()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -33,6 +41,7 @@ namespace RogueNeverDie
 			// TODO: Add your initialization logic here
 			stateManager = new StateManager();
 
+
             base.Initialize();
         }
 
@@ -45,7 +54,12 @@ namespace RogueNeverDie
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+			// TODO: use this.Content to load your game content here
+			commonFont = Content.Load<SpriteFont>("Fonts/Common");
+
+			sonicTex = Content.Load<Texture2D>("Textures/Common/sonic");
+
+			test = new Sprite(sonicTex, new Rectangle(62, 0, 31, 40), 3, 3, 4);
         }
 
         /// <summary>
@@ -66,10 +80,11 @@ namespace RogueNeverDie
         {
 			stateManager.Update(gameTime);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Q))
                 Exit();
 
-            // TODO: Add your update logic here
+			// TODO: Add your update logic here
+			test.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -80,9 +95,14 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+			GraphicsDevice.Clear(Color.Black);
+            
+			// TODO: Add your drawing code here
+			spriteBatch.Begin();
+			//spriteBatch.Draw(sonicTex, new Vector2(16, 16), Color.White);
+			test.Draw(spriteBatch, new Vector2(0, 0));
+			//spriteBatch.DrawString(commonFont, panda.GetHashCode().ToString(), new Vector2(0, 0), Color.Green);
+			spriteBatch.End();
 
             base.Draw(gameTime);
         }

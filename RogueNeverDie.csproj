@@ -50,13 +50,16 @@
     <Compile Include="Engine\Factories\TileFactory.cs" />
     <Compile Include="Engine\Factories\CreatureFactory.cs" />
     <Compile Include="Engine\Factories\LevelFactory.cs" />
-    <Compile Include="Engine\GamaObjects\Sprite.cs" />
-    <Compile Include="Engine\GamaObjects\Sound.cs" />
-    <Compile Include="Engine\GamaObjects\Entity.cs" />
-    <Compile Include="Engine\GamaObjects\Creature.cs" />
-    <Compile Include="Engine\GamaObjects\Tile.cs" />
-    <Compile Include="Engine\GamaObjects\Animation.cs" />
-    <Compile Include="Engine\GamaObjects\Level.cs" />
+    <Compile Include="Engine\GameObjects\Sprite.cs" />
+    <Compile Include="Engine\GameObjects\Sound.cs" />
+    <Compile Include="Engine\GameObjects\Entity.cs" />
+    <Compile Include="Engine\GameObjects\Creature.cs" />
+    <Compile Include="Engine\GameObjects\Tile.cs" />
+    <Compile Include="Engine\GameObjects\Animation.cs" />
+    <Compile Include="Engine\GameObjects\Level.cs" />
+    <Compile Include="Engine\Common\WeightSet.cs" />
+    <Compile Include="Engine\Common\WeightSetElement.cs" />
+    <Compile Include="Engine\Common\RandomSingle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,14 +72,18 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Engine\" />
     <Folder Include="Engine\Factories\" />
-    <Folder Include="Engine\GamaObjects\" />
+    <Folder Include="Engine\GameObjects\" />
+    <Folder Include="Content\" />
+    <Folder Include="Engine\Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

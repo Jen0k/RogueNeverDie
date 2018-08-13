@@ -1,5 +1,5 @@
 ﻿using System;
-namespace RogueNeverDie.Engine.GamaObjects
+namespace RogueNeverDie.Engine.GameObjects
 {
     public class Tile
     {
