@@ -24,9 +24,9 @@ namespace RogueNeverDie.Engine.GameObjects
 				_millisecondsPerFrame = -1;
 			}
 
-			origin = Vector2.Zero;
-			scale = new Vector2(1, 1);
-			rotation = 0;
+			Origin = Vector2.Zero;
+			Scale = new Vector2(1, 1);
+			Rotation = 0;
         }
 
 		protected Texture2D _texture;
@@ -39,9 +39,9 @@ namespace RogueNeverDie.Engine.GameObjects
 		protected int _currentFrame;
 		protected Rectangle _frameRect;
 
-		public Vector2 origin { get; set; }
-		public Vector2 scale { get; set; }
-		public float rotation { get; set; }
+		public Vector2 Origin { get; set; }
+		public Vector2 Scale { get; set; }
+		public float Rotation { get; set; }
 
 		public void Update(GameTime gameTime) 
 		{
@@ -69,14 +69,12 @@ namespace RogueNeverDie.Engine.GameObjects
 		}
         
 		public void Draw(SpriteBatch spriteBatch, Vector2 position) {
-			//spriteBatch.Draw(_texture, position, _frameRect, Color.White);
 			Draw(spriteBatch, position, Color.White, 0, new Vector2(1, 1));
 		}
         
 		public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 scale, SpriteEffects effect = SpriteEffects.None, float layer = 1)
         {
-            //spriteBatch.Draw(_texture, position, _frameRect, Color.White);
-			spriteBatch.Draw(_texture, position, _frameRect, color, rotation + this.rotation, this.origin, scale * this.scale, effect, layer);
+			spriteBatch.Draw(_texture, position, _frameRect, color, rotation + this.Rotation, this.Origin, scale * this.Scale, effect, layer);
         }
     }
 }

@@ -60,12 +60,19 @@
     <Compile Include="Engine\Common\WeightSet.cs" />
     <Compile Include="Engine\Common\WeightSetElement.cs" />
     <Compile Include="Engine\Common\RandomSingle.cs" />
+    <Compile Include="Engine\ResourseLoader.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Engine\GameConsole.cs" />
+    <Compile Include="Engine\GameConsoleMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="MonoGame.Framework">
       <HintPath>packages\MonoGame.Framework.DesktopGL.3.7.0.1681-develop\lib\net45\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +81,18 @@
   <ItemGroup>
     <None Include="app.manifest" />
     <None Include="packages.config" />
+    <None Include="Content\Index.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Textures.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Fonts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Engine\" />

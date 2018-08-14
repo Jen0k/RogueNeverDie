@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,16 +19,17 @@ namespace RogueNeverDie
         
 		protected SpriteFont commonFont;
 
-		protected Texture2D sonicTex;
-		protected Sprite test;
+
         
 		protected StateManager stateManager;
+		protected ResourceManager resourceManager;
+		protected ResourseLoader resourseLoader;
               
         public GameRogue()
         {
             graphics = new GraphicsDeviceManager(this);
 
-            Content.RootDirectory = "Content";
+			Content.RootDirectory = Config.ContentDirectory;
         }
 
         /// <summary>
@@ -40,7 +42,8 @@ namespace RogueNeverDie
         {
 			// TODO: Add your initialization logic here
 			stateManager = new StateManager();
-
+			resourceManager = new ResourceManager();
+			resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory) , resourceManager, Content);
 
             base.Initialize();
         }
@@ -55,11 +58,9 @@ namespace RogueNeverDie
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
-			commonFont = Content.Load<SpriteFont>("Fonts/Common");
+			commonFont = Content.Load<SpriteFont>(Config.CommonFont);
 
-			sonicTex = Content.Load<Texture2D>("Textures/Common/sonic");
-
-			test = new Sprite(sonicTex, new Rectangle(62, 0, 31, 40), 3, 3, 4);
+			resourseLoader.LoadFromConfig(Config.ResoursesRootIndex);         
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace RogueNeverDie
                 Exit();
 
 			// TODO: Add your update logic here
-			test.Update(gameTime);
+
 
             base.Update(gameTime);
         }
@@ -99,9 +100,7 @@ namespace RogueNeverDie
             
 			// TODO: Add your drawing code here
 			spriteBatch.Begin();
-			//spriteBatch.Draw(sonicTex, new Vector2(16, 16), Color.White);
-			test.Draw(spriteBatch, new Vector2(0, 0));
-			//spriteBatch.DrawString(commonFont, panda.GetHashCode().ToString(), new Vector2(0, 0), Color.Green);
+			spriteBatch.DrawString(resourceManager.Load<SpriteFont>("console"), "Test! Test! Hello!", new Vector2(0, 0), Color.White);
 			spriteBatch.End();
 
             base.Draw(gameTime);

@@ -43,3 +43,9 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Common/sonic.png
 
+#begin Fonts/Console.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Console.spritefont
+

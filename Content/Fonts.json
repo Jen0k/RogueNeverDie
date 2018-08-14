@@ -1,0 +1,5 @@
+﻿{
+    "Fonts": [
+        { "id": "console", "path": "Fonts/Console" }
+    ]
+}

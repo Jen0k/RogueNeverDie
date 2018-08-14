@@ -1,0 +1,6 @@
+﻿{
+    "Textures": [
+        { "id": "panda", "path": "Textures/Common/panda" },
+        { "id": "sonic", "path": "Textures/Common/sonic" }
+    ]
+}
