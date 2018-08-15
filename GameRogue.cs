@@ -13,21 +13,19 @@ namespace RogueNeverDie
     /// This is the main type for your game.
     /// </summary>
     public class GameRogue : Game
-    {
-        protected GraphicsDeviceManager graphics;
-		protected SpriteBatch spriteBatch;
-        
+    {      
+		public GraphicsDeviceManager Graphics;
+		public SpriteBatch SpriteBatch;
+		public GameConsole GameConsole;
+		public StateManager StateManager;
+		public ResourceManager ResourceManager;
+		public ResourseLoader ResourseLoader;
+
 		protected SpriteFont commonFont;
-
-
-        
-		protected StateManager stateManager;
-		protected ResourceManager resourceManager;
-		protected ResourseLoader resourseLoader;
               
         public GameRogue()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
 
 			Content.RootDirectory = Config.ContentDirectory;
         }
@@ -40,10 +38,8 @@ namespace RogueNeverDie
         /// </summary>
         protected override void Initialize()
         {
-			// TODO: Add your initialization logic here
-			stateManager = new StateManager();
-			resourceManager = new ResourceManager();
-			resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory) , resourceManager, Content);
+			// TODO: Add your initialization logic here         
+			StateManager = new StateManager();
 
             base.Initialize();
         }
@@ -55,12 +51,17 @@ namespace RogueNeverDie
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
 			commonFont = Content.Load<SpriteFont>(Config.CommonFont);
 
-			resourseLoader.LoadFromConfig(Config.ResoursesRootIndex);         
+			GameConsole = new GameConsole(new Vector2(4, Graphics.PreferredBackBufferHeight - 4), 0, commonFont, Color.Green, 5000);
+			ResourceManager = new ResourceManager();
+            ResourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory), this);
+
+            
+			ResourseLoader.LoadFromConfig(Config.ResoursesRootIndex);         
         }
 
         /// <summary>
@@ -79,13 +80,26 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-			stateManager.Update(gameTime);
+			StateManager.Update(gameTime);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Q))
+			KeyboardState keyboardState = Keyboard.GetState();
+
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Q))
                 Exit();
 
 			// TODO: Add your update logic here
+			if (keyboardState.IsKeyDown(Keys.A)) {
+				try
+				{
+					GameConsole.SendMessage(new GameConsoleMessage("Hello World!", ResourceManager.Load<SpriteFont>("onsole"), Color.Green, DateTime.Now, new TimeSpan(0, 0, 0, 0, 5000)));
+				}
+				catch (Exception e) 
+				{
+					GameConsole.SendError(e.Message);
+				}
+			}
 
+			GameConsole.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -99,9 +113,11 @@ namespace RogueNeverDie
 			GraphicsDevice.Clear(Color.Black);
             
 			// TODO: Add your drawing code here
-			spriteBatch.Begin();
-			spriteBatch.DrawString(resourceManager.Load<SpriteFont>("console"), "Test! Test! Hello!", new Vector2(0, 0), Color.White);
-			spriteBatch.End();
+			SpriteBatch.Begin();
+
+			GameConsole.Draw(SpriteBatch);
+
+			SpriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -12,6 +12,7 @@ namespace RogueNeverDie.Engine
 		}
 
 		protected Dictionary<Type, Dictionary<string, object>> _storage;
+		protected GameRogue _game;
         
 		public T Load<T>(string key)
 		{
@@ -22,7 +23,7 @@ namespace RogueNeverDie.Engine
 				return (T)_storage[type][key];
 			}
 
-			throw new NullReferenceException();
+			throw new NullReferenceException(String.Format("Ресурс {0} с идентификатором {1} отсутсвует в базе!", type.Name, key));         
 		}
 
 		public void Store(string key, object resourse) {
