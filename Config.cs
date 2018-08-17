@@ -5,9 +5,12 @@ namespace RogueNeverDie
     {
         protected Config() { }
 
-		public static string CommonFont = "Fonts/Common";
+		public const string CommonFont = "Fonts/Common";
 
-		public static string ContentDirectory = "Content";
-		public static string ResoursesRootIndex = "Index.json";
+		public const string ContentDirectory = "Content";
+		public const string ResoursesRootIndex = "Index.json";
+
+		public static int ScreenWight = 1024;
+		public static int ScreenHeight = 768;
     }
 }

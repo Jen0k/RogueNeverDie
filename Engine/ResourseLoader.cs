@@ -11,21 +11,19 @@ namespace RogueNeverDie.Engine
 {
     public class ResourseLoader
     {      
-		public ResourseLoader(string rootPath, GameRogue game)
+		public ResourseLoader(string rootPath)
         {
             _rootPath = rootPath;
-			_game = game;
         }
 
         protected string _rootPath;
-		protected GameRogue _game;
 
         protected static Dictionary<string, Type> typeNameToType = new Dictionary<string, Type>() {
             { "Fonts", typeof(SpriteFont) },
             { "Textures", typeof(Texture2D) }
         };
         
-        public void LoadFromConfig(string pathToFile) {
+		public void LoadFromConfig(string pathToFile, ResourceManager resourceManager, ContentManager contentManager) {
 			try
 			{
 				using (StreamReader reader = new StreamReader(Path.Combine(_rootPath, pathToFile)))
@@ -43,27 +41,29 @@ namespace RogueNeverDie.Engine
 
 								foreach (string index in indexes)
 								{
-									LoadFromConfig(index);
+									LoadFromConfig(index, resourceManager, contentManager);
 								}
 
 								break;
-
+							case "Config":
+								break;
 							case "Fonts":
 							case "Textures":
 								List<JToken> childs = deserializedData[node].Children().ToList();
 
 								foreach (JToken child in childs)
 								{
-									_game.ResourceManager.Store(child["id"].Value<string>(),
+									resourceManager.Store(child["id"].Value<string>(),
 															typeof(ContentManager).
 																GetMethod("Load").
 																	MakeGenericMethod(typeNameToType[node]).
-																		Invoke(_game.Content, new object[] { child["path"].Value<string>() }));
+									                                    Invoke(contentManager, new object[] { child["path"].Value<string>() }));
 									// Это просто _contentManager.Load<T>() с динамически подставляемым Generic типом.
 								}
 
 								break;
 							default:
+								GameRogue.LogManager.SendError(String.Format("Некорректный раздел {0} в конфиге!", node));
 								break;
 						}
 					}
@@ -71,7 +71,7 @@ namespace RogueNeverDie.Engine
 			}
 			catch (Exception e)
 			{
-				_game.GameConsole.SendError(e.Message);
+				GameRogue.LogManager.SendError(e.Message);
 			}
         }
     }

@@ -62,8 +62,8 @@
     <Compile Include="Engine\Common\RandomSingle.cs" />
     <Compile Include="Engine\ResourseLoader.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Engine\GameConsole.cs" />
-    <Compile Include="Engine\GameConsoleMessage.cs" />
+    <Compile Include="Engine\LogManager.cs" />
+    <Compile Include="Engine\LogMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

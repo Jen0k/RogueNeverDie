@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,12 +15,13 @@ namespace RogueNeverDie
     /// </summary>
     public class GameRogue : Game
     {      
-		public GraphicsDeviceManager Graphics;
-		public SpriteBatch SpriteBatch;
-		public GameConsole GameConsole;
-		public StateManager StateManager;
-		public ResourceManager ResourceManager;
-		public ResourseLoader ResourseLoader;
+		public static GraphicsDeviceManager Graphics;      
+		public static LogManager LogManager;
+
+		protected SpriteBatch _spriteBatch;
+		protected ResourceManager _resourceManager;
+		protected StateManager _stateManager;
+		protected ResourseLoader _resourseLoader;
 
 		protected SpriteFont commonFont;
               
@@ -39,7 +41,11 @@ namespace RogueNeverDie
         protected override void Initialize()
         {
 			// TODO: Add your initialization logic here         
-			StateManager = new StateManager();
+			_stateManager = new StateManager();
+
+			Graphics.PreferredBackBufferWidth = Config.ScreenWight;
+			Graphics.PreferredBackBufferHeight = Config.ScreenHeight;
+			Graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -51,17 +57,20 @@ namespace RogueNeverDie
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
 			commonFont = Content.Load<SpriteFont>(Config.CommonFont);
 
-			GameConsole = new GameConsole(new Vector2(4, Graphics.PreferredBackBufferHeight - 4), 0, commonFont, Color.Green, 5000);
-			ResourceManager = new ResourceManager();
-            ResourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory), this);
+			if (LogManager == null)
+			{
+				LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 4), 0, commonFont, Color.Green, 5000);
+			}
 
-            
-			ResourseLoader.LoadFromConfig(Config.ResoursesRootIndex);         
+			_resourceManager = new ResourceManager();
+
+			_resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
+			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);         
         }
 
         /// <summary>
@@ -72,7 +81,7 @@ namespace RogueNeverDie
         {
             // TODO: Unload any non ContentManager content here
         }
-
+        
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -80,7 +89,7 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-			StateManager.Update(gameTime);
+			_stateManager.Update(gameTime);
 
 			KeyboardState keyboardState = Keyboard.GetState();
 
@@ -89,17 +98,15 @@ namespace RogueNeverDie
 
 			// TODO: Add your update logic here
 			if (keyboardState.IsKeyDown(Keys.A)) {
-				try
-				{
-					GameConsole.SendMessage(new GameConsoleMessage("Hello World!", ResourceManager.Load<SpriteFont>("onsole"), Color.Green, DateTime.Now, new TimeSpan(0, 0, 0, 0, 5000)));
+				Keys[] pressedKeys = keyboardState.GetPressedKeys();
+				string kk = "";
+				foreach (Keys k in pressedKeys) {
+					kk += k.ToString();
 				}
-				catch (Exception e) 
-				{
-					GameConsole.SendError(e.Message);
-				}
+				LogManager.SendMessage(kk);
 			}
 
-			GameConsole.Update(gameTime);
+			LogManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -113,11 +120,11 @@ namespace RogueNeverDie
 			GraphicsDevice.Clear(Color.Black);
             
 			// TODO: Add your drawing code here
-			SpriteBatch.Begin();
+			_spriteBatch.Begin();
 
-			GameConsole.Draw(SpriteBatch);
+			LogManager.Draw(_spriteBatch);
 
-			SpriteBatch.End();
+			_spriteBatch.End();
 
             base.Draw(gameTime);
         }

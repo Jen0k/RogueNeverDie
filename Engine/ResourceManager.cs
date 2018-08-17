@@ -12,7 +12,6 @@ namespace RogueNeverDie.Engine
 		}
 
 		protected Dictionary<Type, Dictionary<string, object>> _storage;
-		protected GameRogue _game;
         
 		public T Load<T>(string key)
 		{

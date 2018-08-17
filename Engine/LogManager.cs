@@ -6,11 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine
 {
-    public class GameConsole
+	public class LogManager
     {
-		public GameConsole(Vector2 Position, float MessageSpacing, SpriteFont DefaultFont, Color DefaultColor, int DefaultLifeTime)
+		public LogManager(Vector2 Position, float MessageSpacing, SpriteFont DefaultFont, Color DefaultColor, int DefaultLifeTime)
         {
-			_messageList = new List<GameConsoleMessage>();
+			_messageList = new List<LogMessage>();
 			_elapsedLifeTimes = new List<TimeSpan>();
 			_defaultLifeTime = new TimeSpan(0, 0, 0, 0, DefaultLifeTime);
 
@@ -27,18 +27,18 @@ namespace RogueNeverDie.Engine
 		public int DefaultLifeTime { get => (int)_defaultLifeTime.TotalMilliseconds; set => _defaultLifeTime = new TimeSpan(0, 0, 0, 0, value); }
 
 		protected TimeSpan _defaultLifeTime;
-		protected List<GameConsoleMessage> _messageList;
+		protected List<LogMessage> _messageList;
 		protected List<TimeSpan> _elapsedLifeTimes;
         
 		public void SendError(string text) {
-			SendMessage(new GameConsoleMessage(String.Format("Ошибка: {0}", text), DefaultFont, Color.Red, DateTime.Now, _defaultLifeTime));
+			SendMessage(new LogMessage(String.Format("Ошибка: {0}", text), DefaultFont, Color.Red, DateTime.Now, _defaultLifeTime));
 		}
 
 		public void SendMessage(string text) {
-			SendMessage(new GameConsoleMessage(text, DefaultFont, DefaultColor, DateTime.Now, _defaultLifeTime));
+			SendMessage(new LogMessage(text, DefaultFont, DefaultColor, DateTime.Now, _defaultLifeTime));
 		}
 
-		public void SendMessage(GameConsoleMessage message) {
+		public void SendMessage(LogMessage message) {
 			_messageList.Add(message);
 			_elapsedLifeTimes.Add(TimeSpan.Zero);
 		}

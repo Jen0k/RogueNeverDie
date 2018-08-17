@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine
 {
-    public struct GameConsoleMessage
+	public struct LogMessage
     {
-		public GameConsoleMessage(string Text, SpriteFont Font, Color Color, DateTime DateCreated, TimeSpan LifeTimeTotal) {
+		public LogMessage(string Text, SpriteFont Font, Color Color, DateTime DateCreated, TimeSpan LifeTimeTotal) {
 			this.Text = Text;
 			this.Font = Font;
 			this.Color = Color;
