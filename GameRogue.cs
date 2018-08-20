@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,6 +23,7 @@ namespace RogueNeverDie
 		protected ResourceManager _resourceManager;
 		protected StateManager _stateManager;
 		protected ResourseLoader _resourseLoader;
+		protected Commander _commander;
 
 		protected SpriteFont commonFont;
               
@@ -42,10 +44,13 @@ namespace RogueNeverDie
         {
 			// TODO: Add your initialization logic here         
 			_stateManager = new StateManager();
-
+            
 			Graphics.PreferredBackBufferWidth = Config.ScreenWight;
 			Graphics.PreferredBackBufferHeight = Config.ScreenHeight;
 			Graphics.ApplyChanges();
+
+			_stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, new Dictionary<string, object> { { "game", this } });
+			//_stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update, new Dictionary<string, object>());
 
             base.Initialize();
         }
@@ -65,12 +70,17 @@ namespace RogueNeverDie
 			if (LogManager == null)
 			{
 				LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 4), 0, commonFont, Color.Green, 5000);
+
+				_stateManager.AddState("logger", LogManager.Update, LogManager.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 			}
 
 			_resourceManager = new ResourceManager();
 
 			_resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
-			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);         
+			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
+
+			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
+			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
         }
 
         /// <summary>
@@ -88,25 +98,8 @@ namespace RogueNeverDie
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-			_stateManager.Update(gameTime);
-
-			KeyboardState keyboardState = Keyboard.GetState();
-
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Q))
-                Exit();
-
-			// TODO: Add your update logic here
-			if (keyboardState.IsKeyDown(Keys.A)) {
-				Keys[] pressedKeys = keyboardState.GetPressedKeys();
-				string kk = "";
-				foreach (Keys k in pressedKeys) {
-					kk += k.ToString();
-				}
-				LogManager.SendMessage(kk);
-			}
-
-			LogManager.Update(gameTime);
+        {                   
+			_stateManager.UpdateStates(gameTime);
 
             base.Update(gameTime);
         }
@@ -120,9 +113,9 @@ namespace RogueNeverDie
 			GraphicsDevice.Clear(Color.Black);
             
 			// TODO: Add your drawing code here
-			_spriteBatch.Begin();
+			_spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
 
-			LogManager.Draw(_spriteBatch);
+			_stateManager.DrawStates(_spriteBatch, gameTime);
 
 			_spriteBatch.End();
 

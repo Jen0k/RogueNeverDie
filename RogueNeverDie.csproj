@@ -64,6 +64,10 @@
     <Compile Include="Config.cs" />
     <Compile Include="Engine\LogManager.cs" />
     <Compile Include="Engine\LogMessage.cs" />
+    <Compile Include="Engine\State.cs" />
+    <Compile Include="Engine\IState.cs" />
+    <Compile Include="CommonStates.cs" />
+    <Compile Include="Engine\Commander.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

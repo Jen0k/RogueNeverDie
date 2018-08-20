@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine
 {
-	public class LogManager
+	public class LogManager : IState
     {
 		public LogManager(Vector2 Position, float MessageSpacing, SpriteFont DefaultFont, Color DefaultColor, int DefaultLifeTime)
         {
@@ -43,7 +42,7 @@ namespace RogueNeverDie.Engine
 			_elapsedLifeTimes.Add(TimeSpan.Zero);
 		}
         
-		public void Update(GameTime gameTime) {
+		public void Update(GameTime gameTime, Dictionary<string, object> parameters) {
 			List<int> lifeIsOverIndexes = new List<int>();
 
 			for (int i = 0; i < _elapsedLifeTimes.Count; i++) {
@@ -60,7 +59,7 @@ namespace RogueNeverDie.Engine
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch) {
+		public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Dictionary<string, object> parameters) {
 			float postionY = Position.Y - MessageSpacing / 2.0f;
 			for (int i = _messageList.Count - 1; i >= 0; i--)
 			{
