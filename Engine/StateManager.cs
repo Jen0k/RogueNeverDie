@@ -26,11 +26,18 @@ namespace RogueNeverDie.Engine
 			}
 
 			parameters.Add("stateManager", this);
+			parameters.Add("stateId", id);
 
 			_storage.Add(id, new State(updateTask, drawTask, parameters));
 			_statues.Add(id, status);
 		}
         
+		public void SetStateStatus(string id, StateStatus status, List<string> turnUpAfter, List<string> turnOffAfter) {
+			SetStateStatus(id, status);
+			AddStateParameter(id, "turnUpAfter", turnUpAfter);
+			AddStateParameter(id, "turnOffAfter", turnOffAfter);
+		}
+
 		public void SetStateStatus(string id, StateStatus status) {
 			if (_statues.ContainsKey(id)) {
 				_statues[id] = status;
@@ -43,6 +50,17 @@ namespace RogueNeverDie.Engine
 				_statues.Remove(id);
 				_storage.Remove(id);
             }
+		}
+
+		public void AddStateParameter(string stateId, string parameterId, object parameter) {
+			if (_statues.ContainsKey(stateId))
+			{
+				if (_storage[stateId].Parameters.ContainsKey(parameterId))
+				{
+					_storage[stateId].Parameters.Remove(parameterId);               
+				}
+				_storage[stateId].Parameters.Add(parameterId, parameter);
+			}
 		}
 
 		public void UpdateStates(GameTime gameTime) {

@@ -69,7 +69,7 @@ namespace RogueNeverDie
 
 			if (LogManager == null)
 			{
-				LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 4), 0, commonFont, Color.Green, 5000);
+				LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 32), 0, commonFont, Color.Green, 5000);
 
 				_stateManager.AddState("logger", LogManager.Update, LogManager.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 			}
@@ -79,8 +79,10 @@ namespace RogueNeverDie
 			_resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
 			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
 
-			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
-			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"), new Rectangle(4, Graphics.PreferredBackBufferHeight - 28, 512, 512));
+			_commander.Background = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+			_commander.SetBorder(Color.Black, 2);
+			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, new Dictionary<string, object>());
         }
 
         /// <summary>
@@ -110,10 +112,10 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear(Color.Black);
+			GraphicsDevice.Clear(Color.Cyan);
             
 			// TODO: Add your drawing code here
-			_spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
 			_stateManager.DrawStates(_spriteBatch, gameTime);
 

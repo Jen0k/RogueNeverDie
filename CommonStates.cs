@@ -16,11 +16,17 @@ namespace RogueNeverDie
 
 		public static void Global(GameTime gameTime, Dictionary<string, object> parameters)
 		{
+			StateManager stateManager = (StateManager)parameters["stateManager"];
 			KeyboardState keyboardState = Keyboard.GetState();
 
 			if (keyboardState.IsKeyDown(Keys.Q))
 			{
 				((GameRogue)parameters["game"]).Exit();
+			}
+
+			if (keyboardState.IsKeyDown(Keys.Tab)) {
+				stateManager.SetStateStatus("commander", StateStatus.UpdateAndDraw, new List<string> { "global" }, new List<string>());
+				stateManager.SetStateStatus("global", StateStatus.DoNothing);
 			}
 		}
 
