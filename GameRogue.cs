@@ -26,6 +26,8 @@ namespace RogueNeverDie
 		protected Commander _commander;
 
 		protected SpriteFont commonFont;
+
+		protected Level testLevel;
               
         public GameRogue()
         {
@@ -83,6 +85,15 @@ namespace RogueNeverDie
 			_commander.Background = new Color(0.5f, 0.5f, 0.5f, 0.5f);
 			_commander.SetBorder(Color.Black, 2);
 			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, new Dictionary<string, object>());
+
+			testLevel = new Level(new Point(100, 100));
+
+			for (int i = 0; i < 100; i++) {
+				for (int j = 0; j < 100; j++) {
+					Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
+				}
+			}
+			_stateManager.AddState("testLevel", CommonStates.UpdateNonthing, testLevel.Draw, StateStatus.Draw, new Dictionary<string, object>());
         }
 
         /// <summary>
@@ -112,7 +123,7 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear(Color.Cyan);
+			GraphicsDevice.Clear(Color.DarkGreen);
             
 			// TODO: Add your drawing code here
 			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);

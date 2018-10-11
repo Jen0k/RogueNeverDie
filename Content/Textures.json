@@ -1,6 +1,7 @@
 ﻿{
     "Textures": [
         { "id": "panda", "path": "Textures/Common/panda" },
-        { "id": "sonic", "path": "Textures/Common/sonic" }
+        { "id": "sonic", "path": "Textures/Common/sonic" },
+        { "id": "defaultTileTexture", "path": "Textures/Common/DefTexture" }
     ]
 }
