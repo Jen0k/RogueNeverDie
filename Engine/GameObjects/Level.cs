@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace RogueNeverDie.Engine.GameObjects
 {
@@ -24,7 +25,10 @@ namespace RogueNeverDie.Engine.GameObjects
 			}
 			set
 			{
-				_cameraPosition = new Vector2(Math.Min(Math.Max(0, value.X), _levelSize.X), Math.Min(Math.Max(0, value.Y), _levelSize.Y));
+				int halfWidth = (int)(GameRogue.Graphics.PreferredBackBufferWidth / (double)Tile.Size) / 2;
+				int halfHeight = (int)(GameRogue.Graphics.PreferredBackBufferHeight / (double)Tile.Size) / 2;
+
+				_cameraPosition = new Vector2(Math.Min(Math.Max(-halfWidth, value.X), _levelSize.X - halfWidth), Math.Min(Math.Max(-halfHeight, value.Y), _levelSize.Y - halfHeight));
 			}
 		}
 
@@ -48,11 +52,32 @@ namespace RogueNeverDie.Engine.GameObjects
 
 		public void Update(GameTime gameTime, Dictionary<string, object> parameters)
 		{
-			//throw new NotImplementedException();
+			KeyboardState keyboardState = Keyboard.GetState();
+
+			if (keyboardState.IsKeyDown(Keys.Up))
+			{
+				CameraPosition = new Vector2(CameraPosition.X, CameraPosition.Y - 1);
+			}
+			else if (keyboardState.IsKeyDown(Keys.Down))
+			{
+				CameraPosition = new Vector2(CameraPosition.X, CameraPosition.Y + 1);
+			}
+			else if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                CameraPosition = new Vector2(CameraPosition.X - 1, CameraPosition.Y);
+            }
+			else if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                CameraPosition = new Vector2(CameraPosition.X + 1, CameraPosition.Y);
+            }
+
+			//GameRogue.LogManager.SendMessage(String.Format("X: {0}, Y: {1}", CameraPosition.X, CameraPosition.Y));
 		}
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Dictionary<string, object> parameters)
 		{
+			int testCounter = 0;
+
 			Point tilesInScreen = 
 				new Point((int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferWidth / (double)Tile.Size), 
 				          (int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferHeight / (double)Tile.Size));
@@ -66,9 +91,13 @@ namespace RogueNeverDie.Engine.GameObjects
 						{
 							sprite.Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Tile.Size, (y - _cameraPosition.Y) * Tile.Size));
 						}
+
+						testCounter++;
 					}
 				}
 			}
+
+			GameRogue.LogManager.SendMessage(String.Format("Tiles drawed: {0}", testCounter));
 		}
 	}
 }

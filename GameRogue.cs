@@ -88,12 +88,14 @@ namespace RogueNeverDie
 
 			testLevel = new Level(new Point(100, 100));
 
-			for (int i = 0; i < 100; i++) {
-				for (int j = 0; j < 100; j++) {
-					Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
-				}
-			}
-			_stateManager.AddState("testLevel", CommonStates.UpdateNonthing, testLevel.Draw, StateStatus.Draw, new Dictionary<string, object>());
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
+                }
+            }
+            _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear(Color.DarkGreen);
+			GraphicsDevice.Clear(Color.Black);
             
 			// TODO: Add your drawing code here
 			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
