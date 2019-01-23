@@ -96,7 +96,7 @@ namespace RogueNeverDie
                     Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
                 }
             }
-            _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
         }
 
         /// <summary>

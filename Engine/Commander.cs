@@ -10,15 +10,21 @@ namespace RogueNeverDie.Engine
 {
 	public class Commander : IState
     {
-		public Commander(SpriteFont Font, float Padding = 16, 
-            Color FontColor = default(Color), Color BackgroundColor = default(Color), float DrawDepth = 1.0f)
+		public Commander(SpriteFont Font, float Padding = 16, char Cursor = '|',
+            Color FontColor = default(Color), Color BackgroundColor = default(Color), Color FrameColor = default(Color), 
+            int FrameWidth = 4, float DrawDepth = 1.0f)
         {
 			this.Font = Font;
             this.Padding = Padding;
+            this.Cursor = Cursor;
             this.FontColor = FontColor != default(Color) ? FontColor : Color.Green;
 
             _backgroundPixel = new Texture2D(GameRogue.Graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             this.BackgroundColor = BackgroundColor;
+            _framePixel = new Texture2D(GameRogue.Graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            this.FrameColor = FrameColor;
+
+            this.FrameWidth = FrameWidth;
 
             this.DrawDepth = DrawDepth;
 
@@ -31,6 +37,7 @@ namespace RogueNeverDie.Engine
 
 		public SpriteFont Font;
         public float Padding;
+        public Char Cursor;
         public Color FontColor;
         public Color BackgroundColor
         {
@@ -42,9 +49,21 @@ namespace RogueNeverDie.Engine
             }
             set => _backgroundPixel.SetData<Color>(new Color[] { value != default(Color) ? value : new Color(Color.White, 0.8f) });
         }
+        public Color FrameColor
+        {
+            get
+            {
+                Color[] texData = new Color[_framePixel.Width * _framePixel.Height];
+                _framePixel.GetData<Color>(texData);
+                return texData[0];
+            }
+            set => _framePixel.SetData<Color>(new Color[] { value != default(Color) ? value : new Color(Color.Green, 1f) });
+        }
+        public int FrameWidth;
         public float DrawDepth;
 
         protected Texture2D _backgroundPixel;
+        protected Texture2D _framePixel;
 
         protected StringBuilder _buffer;
 		protected KeyboardState _keyStateOne;
@@ -179,6 +198,15 @@ namespace RogueNeverDie.Engine
 
             StringBuilder displayString = new StringBuilder(_buffer.ToString());
 
+            if (gameTime.TotalGameTime.Milliseconds >= 500)
+            {
+                displayString.Append(Cursor);
+            }
+            else
+            {
+                displayString.Append(' ');
+            }
+
             bool wrapPossible = true;
             while (wrapPossible && Font.MeasureString(displayString).X > window.ClientBounds.Width - (Padding * 2))
             {
@@ -208,8 +236,36 @@ namespace RogueNeverDie.Engine
                     (int)(window.ClientBounds.Height - stringSize.Y - Padding),
                     (int)(window.ClientBounds.Width - (Padding * 2)), 
                     (int)stringSize.Y), 
+                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, DrawDepth - 0.0002f);
+            spriteBatch.Draw(_framePixel,
+                new Rectangle(
+                    (int)(Padding - FrameWidth),
+                    (int)(window.ClientBounds.Height - stringSize.Y - Padding - FrameWidth),
+                    (int)(window.ClientBounds.Width - (Padding * 2) + (FrameWidth * 2)),
+                    FrameWidth),
                 null, Color.White, 0, Vector2.Zero, SpriteEffects.None, DrawDepth - 0.0001f);
-			spriteBatch.DrawString(Font, displayString, new Vector2(Padding, window.ClientBounds.Height - stringSize.Y - Padding), 
+            spriteBatch.Draw(_framePixel,
+                new Rectangle(
+                    (int)(Padding - FrameWidth),
+                    (int)(window.ClientBounds.Height - stringSize.Y - Padding + stringSize.Y),
+                    (int)(window.ClientBounds.Width - (Padding * 2) + (FrameWidth * 2)),
+                    FrameWidth),
+                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, DrawDepth - 0.0001f);
+            spriteBatch.Draw(_framePixel,
+                new Rectangle(
+                    (int)(Padding - FrameWidth),
+                    (int)(window.ClientBounds.Height - stringSize.Y - Padding - FrameWidth),
+                    FrameWidth,
+                    (int)(stringSize.Y + (FrameWidth * 2))),
+                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, DrawDepth - 0.0001f);
+            spriteBatch.Draw(_framePixel,
+                new Rectangle(
+                    (int)(window.ClientBounds.Width - Padding),
+                    (int)(window.ClientBounds.Height - stringSize.Y - Padding - FrameWidth),
+                    FrameWidth,
+                    (int)(stringSize.Y + (FrameWidth * 2))),
+                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, DrawDepth - 0.0001f);
+            spriteBatch.DrawString(Font, displayString, new Vector2(Padding, window.ClientBounds.Height - stringSize.Y - Padding), 
                 FontColor, 0, Vector2.Zero, 1, SpriteEffects.None, DrawDepth);
 		}
 	}
