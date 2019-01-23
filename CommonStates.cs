@@ -35,8 +35,10 @@ namespace RogueNeverDie
 			KeyboardState keyboardState = Keyboard.GetState();
 			StateManager stateManager = (StateManager)parameters["stateManager"];
 
-			// TODO: Add your update logic here
-			/*if (keyboardState.IsKeyDown(Keys.A)) {
+            GraphicsDeviceManager graphics = (GraphicsDeviceManager)parameters["graphics"];
+
+            // TODO: Add your update logic here
+            /*if (keyboardState.IsKeyDown(Keys.A)) {
                 Keys[] pressedKeys = keyboardState.GetPressedKeys();
                 string kk = "";
                 foreach (Keys k in pressedKeys) {
@@ -53,19 +55,25 @@ namespace RogueNeverDie
 
             if (keyboardState.IsKeyDown(Keys.Z))
             {
-				stateManager.SetStateStatus("logger", StateStatus.DoNothing);
+                graphics.PreferredBackBufferWidth = 320;
+                graphics.PreferredBackBufferHeight = 240;
+                graphics.ApplyChanges();
             }
             if (keyboardState.IsKeyDown(Keys.X))
             {
-				stateManager.SetStateStatus("logger", StateStatus.Update);
+                graphics.PreferredBackBufferWidth = 800;
+                graphics.PreferredBackBufferHeight = 600;
+                graphics.ApplyChanges();
             }
             if (keyboardState.IsKeyDown(Keys.C))
             {
-				stateManager.SetStateStatus("logger", StateStatus.UpdateAndDraw);
+                graphics.PreferredBackBufferWidth = 1024;
+                graphics.PreferredBackBufferHeight = 768;
+                graphics.ApplyChanges();
             }
             if (keyboardState.IsKeyDown(Keys.V))
             {
-				stateManager.SetStateStatus("logger", StateStatus.Draw);
+				//stateManager.SetStateStatus("logger", StateStatus.Draw);
             }
 		}
     }

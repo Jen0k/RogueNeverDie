@@ -25,7 +25,11 @@ namespace RogueNeverDie.Engine
 				parameters.Remove("stateManager");
 			}
 
-			parameters.Add("stateManager", this);
+            if (parameters.ContainsKey("stateId")) {
+                parameters.Remove("stateId");
+            }
+
+            parameters.Add("stateManager", this);
 			parameters.Add("stateId", id);
 
 			_storage.Add(id, new State(updateTask, drawTask, parameters));

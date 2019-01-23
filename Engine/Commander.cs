@@ -10,46 +10,43 @@ namespace RogueNeverDie.Engine
 {
 	public class Commander : IState
     {
-		public Commander(SpriteFont Font, Rectangle Bounds)
+		public Commander(SpriteFont Font, float Padding = 16, 
+            Color FontColor = default(Color), Color BackgroundColor = default(Color), float DrawDepth = 1.0f)
         {
 			this.Font = Font;
-			this.Bounds = Bounds;
+            this.Padding = Padding;
+            this.FontColor = FontColor != default(Color) ? FontColor : Color.Green;
 
-			_buffer = new StringBuilder();
+            _backgroundPixel = new Texture2D(GameRogue.Graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            this.BackgroundColor = BackgroundColor;
+
+            this.DrawDepth = DrawDepth;
+
+            _buffer = new StringBuilder();
 			_keyStateOne = Keyboard.GetState();
 			_keyStateTwo = Keyboard.GetState();
-            
+
 			_capslock = false;
-
-			_borderTexture= new Texture2D(GameRogue.Graphics.GraphicsDevice, Bounds.Width, Bounds.Height);
-			_backgroundTexture = new Texture2D(GameRogue.Graphics.GraphicsDevice, Bounds.Width, Bounds.Height);
         }
-        
-		public Rectangle Bounds;
+
 		public SpriteFont Font;
-		public Color Background
-		{
-			get
-			{
-				Color[] pixels = new Color[Bounds.Width * Bounds.Height];
-				_backgroundTexture.GetData(pixels);
-				return pixels[0];
-			}
-			set
-			{
-				_backgroundTexture.SetData(Enumerable.Repeat(value, Bounds.Width * Bounds.Height).ToArray());
-			}
-		}
-		public Color Border { get => _border; }
-		public int BorderSize { get => _borderSize; }
+        public float Padding;
+        public Color FontColor;
+        public Color BackgroundColor
+        {
+            get
+            {
+                Color[] texData = new Color[_backgroundPixel.Width * _backgroundPixel.Height];
+                _backgroundPixel.GetData<Color>(texData);
+                return texData[0];
+            }
+            set => _backgroundPixel.SetData<Color>(new Color[] { value != default(Color) ? value : new Color(Color.White, 0.8f) });
+        }
+        public float DrawDepth;
 
-		protected Color _border;
-		protected int _borderSize;
-        
-		protected Texture2D _borderTexture;
-		protected Texture2D _backgroundTexture;
+        protected Texture2D _backgroundPixel;
 
-		protected StringBuilder _buffer;
+        protected StringBuilder _buffer;
 		protected KeyboardState _keyStateOne;
 		protected KeyboardState _keyStateTwo;
 
@@ -85,25 +82,6 @@ namespace RogueNeverDie.Engine
 			{ Keys.OemPipe, '|' }, { Keys.OemSemicolon, ':' }, { Keys.OemQuestion, '?' },
 			{ Keys.OemComma, '<' }, { Keys.OemPeriod, '>' }, { Keys.OemBackslash, '>' }
 		};
-
-		public void SetBorder(Color color, int size) {
-			Color[] pixels = new Color[Bounds.Width * Bounds.Height];
-            for (int x = 0; x < Bounds.Width; x++)
-            {
-                for (int y = 0; y < Bounds.Height; y++)
-                {
-					pixels[x + (y * Bounds.Width)] = color;
-					if (x >= size && y >= size && x < Bounds.Width - size && y < Bounds.Height - size)
-                    {
-                        pixels[x + (y * Bounds.Width)].A = 0;
-                    }
-                }
-            }
-            _borderTexture.SetData(pixels);
-
-			_border = color;
-			_borderSize = size;
-		}
 
 		public void Update(GameTime gameTime, Dictionary<string, object> parameters)
 		{
@@ -187,15 +165,6 @@ namespace RogueNeverDie.Engine
 							if (found)
 							{
 								_buffer.Append(character);
-								if (Font.MeasureString(_buffer.ToString()).X >= Bounds.Width)
-								{
-									if (_buffer.Length > 0)
-									{
-										_buffer.Remove(_buffer.Length - 1, 1);
-									}
-									_buffer.Append(Environment.NewLine);
-									_buffer.Append(character);
-								}
 							}
 
 							break;
@@ -206,9 +175,42 @@ namespace RogueNeverDie.Engine
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Dictionary<string, object> parameters)
 		{
-			spriteBatch.Draw(_backgroundTexture, Bounds, Color.White);
-			spriteBatch.Draw(_borderTexture, Bounds, Color.White);
-			spriteBatch.DrawString(Font, _buffer.ToString(), new Vector2(Bounds.X, Bounds.Y), new Color(new Vector4(1, 1, 1, 1f)));
+            GameWindow window = (GameWindow)parameters["gameWindow"];
+
+            StringBuilder displayString = new StringBuilder(_buffer.ToString());
+
+            bool wrapPossible = true;
+            while (wrapPossible && Font.MeasureString(displayString).X > window.ClientBounds.Width - (Padding * 2))
+            {
+                StringBuilder partialString = new StringBuilder(displayString.ToString());
+                while (wrapPossible && Font.MeasureString(partialString).X > window.ClientBounds.Width - (Padding * 2))
+                {
+                    if (partialString.Length > 0)
+                    {
+                        partialString.Length -= 1;
+                    }
+                    else
+                    {
+                        wrapPossible = false;
+                    }
+                }
+                if (wrapPossible)
+                {
+                    displayString.Insert(partialString.Length, Environment.NewLine);
+                }
+            }
+
+            Vector2 stringSize = Font.MeasureString(displayString);
+
+            spriteBatch.Draw(_backgroundPixel, 
+                new Rectangle(
+                    (int)Padding, 
+                    (int)(window.ClientBounds.Height - stringSize.Y - Padding),
+                    (int)(window.ClientBounds.Width - (Padding * 2)), 
+                    (int)stringSize.Y), 
+                null, Color.White, 0, Vector2.Zero, SpriteEffects.None, DrawDepth - 0.0001f);
+			spriteBatch.DrawString(Font, displayString, new Vector2(Padding, window.ClientBounds.Height - stringSize.Y - Padding), 
+                FontColor, 0, Vector2.Zero, 1, SpriteEffects.None, DrawDepth);
 		}
 	}
 }

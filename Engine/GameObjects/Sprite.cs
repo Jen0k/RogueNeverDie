@@ -72,7 +72,7 @@ namespace RogueNeverDie.Engine.GameObjects
 			Draw(spriteBatch, position, Color.White, 0, new Vector2(1, 1));
 		}
         
-		public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 scale, SpriteEffects effect = SpriteEffects.None, float layer = 1)
+		public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 scale, SpriteEffects effect = SpriteEffects.None, float layer = 0.5f)
         {
 			spriteBatch.Draw(_texture, position, _frameRect, color, rotation + this.Rotation, this.Origin, scale * this.Scale, effect, layer);
         }

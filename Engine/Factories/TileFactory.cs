@@ -44,7 +44,7 @@ namespace RogueNeverDie.Engine.Factories
             if (!Enum.TryParse(type, out detectedType))
             {
                 throw new ArgumentException(
-                    String.Format("Аргумент {0} не является действительным {1)!", type, typeof(detectedType).Name)
+                    //String.Format("Аргумент {0} не является действительным {1)!", type, typeof(detectedType).Name)
                 );
             }
 
@@ -60,8 +60,8 @@ namespace RogueNeverDie.Engine.Factories
 			AddTilePartPattern(_stringToTilePart(type), sprite, rate);
         }
         
-		public Tile Build(Form form, string texMain, string texBackground) {
+		//public Tile Build(Form form, string texMain, string texBackground) {
 			
-		}
+		//}
     }
 }

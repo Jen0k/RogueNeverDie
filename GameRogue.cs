@@ -51,8 +51,10 @@ namespace RogueNeverDie
 			Graphics.PreferredBackBufferHeight = Config.ScreenHeight;
 			Graphics.ApplyChanges();
 
-			_stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, new Dictionary<string, object> { { "game", this } });
-			//_stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update, new Dictionary<string, object>());
+			_stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, 
+                new Dictionary<string, object> { { "game", this } });
+			_stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update, 
+                new Dictionary<string, object> { { "graphics", Graphics } });
 
             base.Initialize();
         }
@@ -81,10 +83,9 @@ namespace RogueNeverDie
 			_resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
 			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
 
-			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"), new Rectangle(4, Graphics.PreferredBackBufferHeight - 28, 512, 512));
-			_commander.Background = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-			_commander.SetBorder(Color.Black, 2);
-			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, new Dictionary<string, object>());
+			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
+			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, 
+                new Dictionary<string, object> { { "gameWindow", Window } });
 
 			testLevel = new Level(new Point(100, 100));
 
@@ -128,7 +129,7 @@ namespace RogueNeverDie
 			GraphicsDevice.Clear(Color.Black);
             
 			// TODO: Add your drawing code here
-			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
 
 			_stateManager.DrawStates(_spriteBatch, gameTime);
 
