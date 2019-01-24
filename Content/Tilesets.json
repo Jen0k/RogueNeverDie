@@ -1,0 +1,19 @@
+﻿{
+    "Tilesets": [
+        {
+            "id": "darkDungeon",
+            "sprites": {
+                "fill": [
+                    { "sprite": "drkdngfill1", "wight": 100 },
+                    { "sprite": "drkdngfill2", "wight": 100 },
+                    { "sprite": "drkdngfill3", "wight": 10 }
+                ],
+                "border": [
+                    { "sprite": "drkdngbrd1", "wight": 100 },
+                    { "sprite": "drkdngbrd2", "wight": 100 },
+                    { "sprite": "drkdngbrd3", "wight": 10 }
+                ]
+            }
+        }
+    ]
+}

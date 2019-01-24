@@ -37,8 +37,16 @@ namespace RogueNeverDie.Engine.Factories
 			public SideTypes LeftBottom;
 			public SideTypes RightBottom;
 		}
-        
-		protected PartTypes _stringToTilePart(string type) {
+
+        public struct SubTile
+        {
+            public bool LeftTop;
+            public bool LeftBottom;
+            public bool RightTop;
+            public bool RightBottom;
+        }
+
+        protected PartTypes _stringToTilePart(string type) {
 			PartTypes detectedType;
 
             if (!Enum.TryParse(type, out detectedType))
