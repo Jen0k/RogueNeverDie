@@ -1,5 +1,14 @@
 ﻿{
     "Levels": [
-        ""
+        { 
+            "id": "dungeon01",
+            "height": 128,
+            "width": 128,
+            "generation": {
+                "type": "room",
+                "wallWidth": 3
+            },
+            "tileset": "darkDungeon"
+        }
     ]
 }

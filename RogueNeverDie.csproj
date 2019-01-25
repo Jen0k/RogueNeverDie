@@ -52,7 +52,7 @@
     <Compile Include="Engine\GameObjects\Entity.cs" />
     <Compile Include="Engine\GameObjects\Creature.cs" />
     <Compile Include="Engine\GameObjects\Tile.cs" />
-    <Compile Include="Engine\GameObjects\Animation.cs" />
+    <Compile Include="Engine\GameObjects\AnimatedSprite.cs" />
     <Compile Include="Engine\GameObjects\Level.cs" />
     <Compile Include="Engine\Common\WeightSet.cs" />
     <Compile Include="Engine\Common\WeightSetElement.cs" />

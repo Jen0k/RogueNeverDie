@@ -37,7 +37,7 @@ namespace RogueNeverDie.Engine
 
 		public SpriteFont Font;
         public float Padding;
-        public Char Cursor;
+        public char Cursor;
         public Color FontColor;
         public Color BackgroundColor
         {
