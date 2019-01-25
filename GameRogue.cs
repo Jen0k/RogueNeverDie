@@ -28,6 +28,8 @@ namespace RogueNeverDie
 		protected SpriteFont commonFont;
 
 		protected Level testLevel;
+
+        protected AnimatedSprite testSprite;
               
         public GameRogue()
         {
@@ -97,6 +99,7 @@ namespace RogueNeverDie
                 }
             }
             //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            testSprite = new AnimatedSprite(_resourceManager.Load<Texture2D>("animated"), 27, 7, 14, new Rectangle(0, 0, 74, 87), new Vector2(0, 0), 0, 4);
         }
 
         /// <summary>
@@ -116,7 +119,7 @@ namespace RogueNeverDie
         protected override void Update(GameTime gameTime)
         {                   
 			_stateManager.UpdateStates(gameTime);
-
+            testSprite.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -132,8 +135,8 @@ namespace RogueNeverDie
 			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
 
 			_stateManager.DrawStates(_spriteBatch, gameTime);
-
-			_spriteBatch.End();
+            testSprite.Draw(_spriteBatch, new Vector2(0, 0));
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

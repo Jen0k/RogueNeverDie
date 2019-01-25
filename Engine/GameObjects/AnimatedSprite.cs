@@ -35,7 +35,7 @@ namespace RogueNeverDie.Engine.GameObjects
             if (_msecAfterLastFrame >= _msecPerFrame)
             {
                 _currentFrame++;
-                if (_currentFrame > FramesTotal)
+                if (_currentFrame >= FramesTotal)
                 {
                     _currentFrame = 0;
                 }
