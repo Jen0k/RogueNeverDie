@@ -5,33 +5,56 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine.GameObjects
 {
-	public class Tile
+    public struct TileSpriteSubGroup
     {
-		public Tile(Level parentLevel, Point coordinates, Sprite backgroundSprite)
+        public Sprite[] LeftTop;
+        public Sprite[] RightTop;
+        public Sprite[] LeftBottom;
+        public Sprite[] RightBottom;
+    }
+
+    public class Tile
+    {
+		public Tile(Level parentLevel, Point coordinates)
         {
 			_parent = parentLevel;
-
 			_coordinates = coordinates;
 
-			_sprites = new List<Sprite>(1);         
-			_sprites.Add(backgroundSprite);
-
-			_entities = new List<Entity>();
-			_creatures = new List<Creature>();
+            _sprites = new LinkedList<TileSpriteSubGroup>();
 
 			parentLevel.SetTile(this);
         }
 
-		public const int Size = 32;
+        public const int Size = 32;
 
 		protected Level _parent;  
 		protected Point _coordinates;
 
-		protected List<Sprite> _sprites;
-		protected List<Entity> _entities;
-		protected List<Creature> _creatures;
+		protected LinkedList<TileSpriteSubGroup> _sprites;
         
 		public Point Coordinates { get => _coordinates; }
-		public IReadOnlyList<Sprite> Sprites { get => _sprites.AsReadOnly(); }
-	}
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        {
+            foreach(TileSpriteSubGroup spriteGroup in _sprites)
+            {
+                foreach(Sprite sprite in spriteGroup.LeftTop)
+                {
+                    sprite.Draw(spriteBatch, position);
+                }
+                foreach (Sprite sprite in spriteGroup.LeftBottom)
+                {
+                    sprite.Draw(spriteBatch, new Vector2(position.X, position.Y + Size/2.0f));
+                }
+                foreach (Sprite sprite in spriteGroup.LeftBottom)
+                {
+                    sprite.Draw(spriteBatch, new Vector2(position.X + (Size / 2.0f), position.Y));
+                }
+                foreach (Sprite sprite in spriteGroup.LeftBottom)
+                {
+                    sprite.Draw(spriteBatch, new Vector2(position.X + (Size / 2.0f), position.Y + (Size / 2.0f)));
+                }
+            }
+        }
+    }
 }

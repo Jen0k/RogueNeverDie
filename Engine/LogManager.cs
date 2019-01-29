@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine
 {
-	public class LogManager : IState
+	public class LogManager : IStateUpdate, IStateDraw
     {
 		public LogManager(Vector2 Position, float MessageSpacing, SpriteFont DefaultFont, Color DefaultColor, int DefaultLifeTime)
         {

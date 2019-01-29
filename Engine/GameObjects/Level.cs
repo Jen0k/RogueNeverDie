@@ -7,15 +7,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RogueNeverDie.Engine.GameObjects
 {
-	public class Level : IState
+	public class Level : IStateUpdate, IStateDraw
     {
 		public Level(Point levelSize)
         {
 			_levelSize = levelSize;
-			_tiles = new Dictionary<Point, Tile>(_levelSize.X * _levelSize.Y);         
-
-			_entities = new List<Entity>();
-			_creatures = new List<Creature>();
+			_tiles = new Dictionary<Point, Tile>(_levelSize.X * _levelSize.Y);
         }
 
 		public Vector2 CameraPosition {
@@ -35,8 +32,6 @@ namespace RogueNeverDie.Engine.GameObjects
 		protected Vector2 _cameraPosition;
 		protected Point _levelSize;
 		protected Dictionary<Point, Tile> _tiles;
-		protected List<Entity> _entities;
-		protected List<Creature> _creatures;
         
 		public void SetTile(Tile tile) {
 			if (tile.Coordinates.X < 0 || tile.Coordinates.X >= _levelSize.X || tile.Coordinates.Y < 0 || tile.Coordinates.Y >= _levelSize.Y) {
@@ -87,11 +82,7 @@ namespace RogueNeverDie.Engine.GameObjects
 					Point keyPoint = new Point(x, y);
 					if (_tiles.ContainsKey(keyPoint))
 					{
-						foreach (Sprite sprite in _tiles[keyPoint].Sprites)
-						{
-							sprite.Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Tile.Size, (y - _cameraPosition.Y) * Tile.Size));
-						}
-
+                        _tiles[keyPoint].Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Tile.Size, (y - _cameraPosition.Y) * Tile.Size));
 						testCounter++;
 					}
 				}

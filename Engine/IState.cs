@@ -5,9 +5,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine
 {
-    public interface IState
+    public interface IStateDraw
     {
-		void Update(GameTime gameTime, Dictionary<string, object> parameters);
 		void Draw(SpriteBatch spriteBatch, GameTime gameTime, Dictionary<string, object> parameters);
+    }
+
+    public interface IStateUpdate
+    {
+        void Update(GameTime gameTime, Dictionary<string, object> parameters);
     }
 }

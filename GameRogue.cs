@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using RogueNeverDie.Engine;
 using RogueNeverDie.Engine.Common;
 using RogueNeverDie.Engine.GameObjects;
+using RogueNeverDie.Engine.Factories;
 
 namespace RogueNeverDie
 {
@@ -18,6 +19,8 @@ namespace RogueNeverDie
     {      
 		public static GraphicsDeviceManager Graphics;      
 		public static LogManager LogManager;
+
+        public static SpriteFactory SpriteFactory;
 
 		protected SpriteBatch _spriteBatch;
 		protected ResourceManager _resourceManager;
@@ -48,15 +51,18 @@ namespace RogueNeverDie
         {
 			// TODO: Add your initialization logic here         
 			_stateManager = new StateManager();
-            
-			Graphics.PreferredBackBufferWidth = Config.ScreenWight;
-			Graphics.PreferredBackBufferHeight = Config.ScreenHeight;
-			Graphics.ApplyChanges();
 
-			_stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, 
+            _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
+                new Dictionary<string, object>());
+            _stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, 
                 new Dictionary<string, object> { { "game", this } });
+
 			_stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update, 
                 new Dictionary<string, object> { { "graphics", Graphics } });
+
+            Graphics.PreferredBackBufferWidth = Config.ScreenWight;
+            Graphics.PreferredBackBufferHeight = Config.ScreenHeight;
+            Graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -85,6 +91,8 @@ namespace RogueNeverDie
 			_resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
 			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
 
+            SpriteFactory = new SpriteFactory(_resourceManager);
+
 			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
 			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, 
                 new Dictionary<string, object> { { "gameWindow", Window } });
@@ -95,10 +103,10 @@ namespace RogueNeverDie
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
+                    //Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
                 }
             }
-            //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
             testSprite = new AnimatedSprite(_resourceManager.Load<Texture2D>("animated"), 27, 7, 14, new Rectangle(0, 0, 74, 87), new Vector2(0, 0), 0, 4);
         }
 

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RogueNeverDie.Engine
 {
-	public class Commander : IState
+	public class Commander : IStateUpdate, IStateDraw
     {
 		public Commander(SpriteFont Font, float Padding = 16, char Cursor = '|',
             Color FontColor = default(Color), Color BackgroundColor = default(Color), Color FrameColor = default(Color), 
