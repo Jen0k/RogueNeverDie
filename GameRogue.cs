@@ -32,7 +32,7 @@ namespace RogueNeverDie
 
 		protected Level testLevel;
 
-        protected AnimatedSprite testSprite;
+        protected Sprite testSprite;
               
         public GameRogue()
         {
@@ -52,8 +52,6 @@ namespace RogueNeverDie
 			// TODO: Add your initialization logic here         
 			_stateManager = new StateManager();
 
-            _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
-                new Dictionary<string, object>());
             _stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, 
                 new Dictionary<string, object> { { "game", this } });
 
@@ -92,8 +90,10 @@ namespace RogueNeverDie
 			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
 
             SpriteFactory = new SpriteFactory(_resourceManager);
+            _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
+                new Dictionary<string, object>());
 
-			_commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
+            _commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
 			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, 
                 new Dictionary<string, object> { { "gameWindow", Window } });
 
@@ -107,7 +107,7 @@ namespace RogueNeverDie
                 }
             }
             _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
-            testSprite = new AnimatedSprite(_resourceManager.Load<Texture2D>("animated"), 27, 7, 14, new Rectangle(0, 0, 74, 87), new Vector2(0, 0), 0, 4);
+            testSprite = SpriteFactory.CreateAnimatedSpriteFromEntireTexture("animated", 27, 7, 14);
         }
 
         /// <summary>
@@ -127,7 +127,6 @@ namespace RogueNeverDie
         protected override void Update(GameTime gameTime)
         {                   
 			_stateManager.UpdateStates(gameTime);
-            testSprite.Update(gameTime);
             base.Update(gameTime);
         }
 

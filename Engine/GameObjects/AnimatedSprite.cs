@@ -6,9 +6,19 @@ namespace RogueNeverDie.Engine.GameObjects
 {
     public class AnimatedSprite : Sprite
     {
-        public AnimatedSprite(Texture2D Texture, int FramesTotal, int FramesPerLine, int FramesPerSecond, Rectangle ViewRectangle = default(Rectangle), Vector2 Origin = default(Vector2), float Rotation = 0, float Scale = 1, float DrawDepth = 0)
-            : base(Texture, ViewRectangle, Origin, Rotation, Scale, DrawDepth)
+        public AnimatedSprite(Texture2D Texture, int FramesTotal, int FramesPerLine, int FramesPerSecond, Rectangle ViewRectangle = default(Rectangle), Vector2 Origin = default(Vector2), float Rotation = 0, Color Color = default(Color), float Scale = 1, float DrawDepth = 0)
+            : base(Texture, ViewRectangle, Origin, Rotation, Color, Scale, DrawDepth)
         {
+            if (ViewRectangle == default(Rectangle))
+            {
+                this.ViewRectangle = new Rectangle(
+                    Texture.Bounds.X,
+                    Texture.Bounds.Y,
+                    (int)Math.Round((float)Texture.Bounds.Width / FramesPerLine),
+                    (int)Math.Round(Texture.Bounds.Height / Math.Ceiling((float)FramesTotal / FramesPerLine))
+                );
+            }
+
             this.FramesTotal = FramesTotal;
             this.FramesPerLine = FramesPerLine;
             this.FramesPerSecond = FramesPerSecond;
@@ -43,7 +53,7 @@ namespace RogueNeverDie.Engine.GameObjects
             }
         }
 
-        new public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             Rectangle currentFrame = new Rectangle(
                 ViewRectangle.X + ((_currentFrame % FramesPerLine) * ViewRectangle.Width),
