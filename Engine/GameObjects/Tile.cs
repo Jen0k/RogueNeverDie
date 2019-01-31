@@ -7,22 +7,22 @@ namespace RogueNeverDie.Engine.GameObjects
 {
     public struct TileSpriteSubGroup
     {
-        public Sprite[] LeftTop;
-        public Sprite[] RightTop;
-        public Sprite[] LeftBottom;
-        public Sprite[] RightBottom;
+        public ISprite LeftTop;
+        public ISprite RightTop;
+        public ISprite LeftBottom;
+        public ISprite RightBottom;
     }
 
     public class Tile
     {
-		public Tile(Level parentLevel, Point coordinates)
+		public Tile(Level parentLevel, TileSpriteSubGroup SpriteSubGroup, Point coordinates)
         {
 			_parent = parentLevel;
 			_coordinates = coordinates;
 
-            _sprites = new LinkedList<TileSpriteSubGroup>();
+            _sprites = new TileSpriteSubGroup[] { SpriteSubGroup };
 
-			parentLevel.SetTile(this);
+            parentLevel.SetTile(this);
         }
 
         public const int Size = 32;
@@ -30,7 +30,7 @@ namespace RogueNeverDie.Engine.GameObjects
 		protected Level _parent;  
 		protected Point _coordinates;
 
-		protected LinkedList<TileSpriteSubGroup> _sprites;
+		protected TileSpriteSubGroup[] _sprites;
         
 		public Point Coordinates { get => _coordinates; }
 
@@ -38,22 +38,10 @@ namespace RogueNeverDie.Engine.GameObjects
         {
             foreach(TileSpriteSubGroup spriteGroup in _sprites)
             {
-                foreach(Sprite sprite in spriteGroup.LeftTop)
-                {
-                    sprite.Draw(spriteBatch, position);
-                }
-                foreach (Sprite sprite in spriteGroup.LeftBottom)
-                {
-                    sprite.Draw(spriteBatch, new Vector2(position.X, position.Y + Size/2.0f));
-                }
-                foreach (Sprite sprite in spriteGroup.LeftBottom)
-                {
-                    sprite.Draw(spriteBatch, new Vector2(position.X + (Size / 2.0f), position.Y));
-                }
-                foreach (Sprite sprite in spriteGroup.LeftBottom)
-                {
-                    sprite.Draw(spriteBatch, new Vector2(position.X + (Size / 2.0f), position.Y + (Size / 2.0f)));
-                }
+                spriteGroup.LeftTop.Draw(spriteBatch, position);
+                spriteGroup.LeftBottom.Draw(spriteBatch, new Vector2(position.X, position.Y + Size / 2.0f));
+                spriteGroup.RightTop.Draw(spriteBatch, new Vector2(position.X + (Size / 2.0f), position.Y));
+                spriteGroup.RightBottom.Draw(spriteBatch, new Vector2(position.X + (Size / 2.0f), position.Y + (Size / 2.0f)));
             }
         }
     }

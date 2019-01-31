@@ -33,7 +33,9 @@ namespace RogueNeverDie
 		protected Level testLevel;
 
         protected Sprite testSprite;
-              
+        protected Sprite testSprite2;
+        protected SandwichSprite testSprite3;
+
         public GameRogue()
         {
             Graphics = new GraphicsDeviceManager(this);
@@ -106,8 +108,12 @@ namespace RogueNeverDie
                     //Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
                 }
             }
-            _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
-            testSprite = SpriteFactory.CreateAnimatedSpriteFromEntireTexture("animated", 27, 7, 14);
+            //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            testSprite = SpriteFactory.CreateAnimated("animated", 27, 7, 14);
+            testSprite2 = SpriteFactory.Create("defaultTileTexture");
+
+            testSprite3 = new SandwichSprite(testSprite);
+            testSprite3.Add(testSprite2);
         }
 
         /// <summary>
@@ -142,7 +148,7 @@ namespace RogueNeverDie
 			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
 
 			_stateManager.DrawStates(_spriteBatch, gameTime);
-            testSprite.Draw(_spriteBatch, new Vector2(0, 0));
+            testSprite3.Draw(_spriteBatch, new Vector2(0, 0));
             _spriteBatch.End();
 
             base.Draw(gameTime);

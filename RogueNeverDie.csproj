@@ -66,6 +66,8 @@
     <Compile Include="CommonStates.cs" />
     <Compile Include="Engine\Commander.cs" />
     <Compile Include="Engine\Factories\SpriteFactory.cs" />
+    <Compile Include="Engine\GameObjects\SandwichSprite.cs" />
+    <Compile Include="Engine\GameObjects\ISprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

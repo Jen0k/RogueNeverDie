@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace RogueNeverDie.Engine.GameObjects
 {
-    public class Sprite
+    public class Sprite : ISprite
     {
 		public Sprite(Texture2D Texture, Rectangle ViewRectangle = default(Rectangle), Vector2 Origin = default(Vector2), float Rotation = 0, Color Color = default(Color), float Scale = 1, float DrawDepth = 0)
         {
