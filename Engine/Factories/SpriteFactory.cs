@@ -8,9 +8,9 @@ namespace RogueNeverDie.Engine.Factories
 {
     public class SpriteFactory : IStateUpdate
     {
-        public SpriteFactory(ResourceManager resourceManager)
+        public SpriteFactory(ResourceManager ResourceManager)
         {
-            _resourceManager = resourceManager;
+            _resourceManager = ResourceManager;
             _animatedSprites = new LinkedList<AnimatedSprite>(); 
         }
 
@@ -19,9 +19,24 @@ namespace RogueNeverDie.Engine.Factories
             return new Sprite(_resourceManager.Load<Texture2D>(Texture));
         }
 
+        public Sprite Create(string Texture, Rectangle ViewRectangle)
+        {
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero);
+        }
+
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin)
+        {
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin);
+        }
+
         public Sprite Create(string Texture, Rectangle ViewRectangle, float Rotation)
         {
             return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, Rotation);
+        }
+
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation)
+        {
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation);
         }
 
         public Sprite Create(string Texture, Rectangle ViewRectangle, float Rotation, Color Color)

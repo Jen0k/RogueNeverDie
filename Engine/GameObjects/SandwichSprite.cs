@@ -7,9 +7,9 @@ namespace RogueNeverDie.Engine.GameObjects
 {
     public class SandwichSprite : ISprite
     {
-        public SandwichSprite(ISprite Sprite)
+        public SandwichSprite()
         {
-            _spriteSandwich = new ISprite[] { Sprite };
+            _spriteSandwich = new ISprite[] { };
         }
 
         public ISprite[] _spriteSandwich;

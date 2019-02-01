@@ -21,6 +21,7 @@ namespace RogueNeverDie
 		public static LogManager LogManager;
 
         public static SpriteFactory SpriteFactory;
+        public static TileFactory TileFactory;
 
 		protected SpriteBatch _spriteBatch;
 		protected ResourceManager _resourceManager;
@@ -32,9 +33,7 @@ namespace RogueNeverDie
 
 		protected Level testLevel;
 
-        protected Sprite testSprite;
-        protected Sprite testSprite2;
-        protected SandwichSprite testSprite3;
+        ISprite test;
 
         public GameRogue()
         {
@@ -94,6 +93,7 @@ namespace RogueNeverDie
             SpriteFactory = new SpriteFactory(_resourceManager);
             _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
                 new Dictionary<string, object>());
+            TileFactory = new TileFactory(_resourceManager, SpriteFactory);
 
             _commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
 			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, 
@@ -109,11 +109,8 @@ namespace RogueNeverDie
                 }
             }
             //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
-            testSprite = SpriteFactory.CreateAnimated("animated", 27, 7, 14);
-            testSprite2 = SpriteFactory.Create("defaultTileTexture");
 
-            testSprite3 = new SandwichSprite(testSprite);
-            testSprite3.Add(testSprite2);
+            test = TileFactory.CreateSubtile("testTileset", "testTileset", 0, 0, 32, 0, true, false, false, false);
         }
 
         /// <summary>
@@ -142,13 +139,12 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear(Color.Black);
+			GraphicsDevice.Clear(Color.Green);
             
 			// TODO: Add your drawing code here
 			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-
+            test.Draw(_spriteBatch, new Vector2(128, 128));
 			_stateManager.DrawStates(_spriteBatch, gameTime);
-            testSprite3.Draw(_spriteBatch, new Vector2(0, 0));
             _spriteBatch.End();
 
             base.Draw(gameTime);

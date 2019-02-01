@@ -8,40 +8,84 @@ namespace RogueNeverDie.Engine.Factories
 {
 	public class TileFactory
 	{
-        public TileFactory()
+        public TileFactory(ResourceManager ResourceManager, SpriteFactory SpriteFactory)
         {
-
+            _resourceManager = ResourceManager;
+            _spriteFactory = SpriteFactory;
         }
 
-        ResourceManager _resourceManager;
-        SpriteFactory _spriteFactory;
+        protected ResourceManager _resourceManager;
+        protected SpriteFactory _spriteFactory;
 
-        public ISprite CreateSubtile(bool topleft, bool topright, bool bottomleft, bool bottomright)
+        public ISprite CreateSubtile(string fillTexture, string borderTexture, int X, int Y, int Xb, int Yb, bool topleft, bool topright, bool bottomleft, bool bottomright)
         {
-            string dammyName = String.Empty;
-            int dammyX = 0;
-            int dammyY = 0;
+            int tileHalfSize = Tile.Size / 2;
+            int tileQuarterSize = Tile.Size / 4;
 
-            SandwichSprite subtileSprites = new SandwichSprite(default(Sprite));
+            SandwichSprite subtileSprites = new SandwichSprite();
 
             if (topleft)
             {
-                Sprite topLeft = _spriteFactory.Create(dammyName, new Rectangle(dammyX, dammyY, Tile.Size / 2, Tile.Size / 2), 0);
+                subtileSprites.Add(_spriteFactory.Create(fillTexture, new Rectangle(X, Y, tileQuarterSize, tileQuarterSize)));
             }
             if (topright)
             {
-                Sprite topRight = _spriteFactory.Create(dammyName, new Rectangle(dammyX + (Tile.Size / 2), dammyY, Tile.Size / 2, Tile.Size / 2), 0);
+                subtileSprites.Add(_spriteFactory.Create(fillTexture, new Rectangle(X + tileQuarterSize, Y, tileQuarterSize, tileQuarterSize), new Vector2(-tileQuarterSize, 0)));
             }
             if (bottomleft)
             {
-                Sprite bottomLeft = _spriteFactory.Create(dammyName, new Rectangle(dammyX, dammyY + (Tile.Size / 2), Tile.Size / 2, Tile.Size / 2), 0);
+                subtileSprites.Add(_spriteFactory.Create(fillTexture, new Rectangle(X, Y + tileQuarterSize, tileQuarterSize, tileQuarterSize), new Vector2(0, -tileQuarterSize)));
             }
             if (bottomright)
             {
-                Sprite bottomLeft = _spriteFactory.Create(dammyName, new Rectangle(dammyX + (Tile.Size / 2), dammyY + (Tile.Size / 2), Tile.Size / 2, Tile.Size / 2), 0);
+                subtileSprites.Add(_spriteFactory.Create(fillTexture, new Rectangle(X + tileQuarterSize, Y + tileQuarterSize, tileQuarterSize, tileQuarterSize), new Vector2(-tileQuarterSize, -tileQuarterSize)));
+            }
+            if (topleft != topright)
+            {
+                if (topleft)
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileHalfSize, 0) , MathHelper.PiOver2));
+                }
+                else
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(0, -tileQuarterSize), -MathHelper.PiOver2));
+                }
+            }
+            if (topleft != bottomleft)
+            {
+                if (topleft)
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileQuarterSize, -tileHalfSize), MathHelper.Pi));
+                }
+                else
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize)));
+                }
+            }
+            if (bottomleft != bottomright)
+            {
+                if (bottomleft)
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileHalfSize, -tileQuarterSize), MathHelper.PiOver2));
+                }
+                else
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(0, -tileHalfSize), -MathHelper.PiOver2));
+                }
+            }
+            if (bottomright != topright)
+            {
+                if (topright)
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileHalfSize, -tileHalfSize), MathHelper.Pi));
+                }
+                else
+                {
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileQuarterSize, 0), MathHelper.Pi));
+                }
             }
 
-            return default(ISprite);
+            return subtileSprites;
         }
     }
 }
