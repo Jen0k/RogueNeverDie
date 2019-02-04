@@ -17,12 +17,13 @@ namespace RogueNeverDie.Engine.Factories
         protected ResourceManager _resourceManager;
         protected SpriteFactory _spriteFactory;
 
-        public ISprite CreateSubtile(string fillTexture, string borderTexture, int X, int Y, int Xb, int Yb, bool topleft, bool topright, bool bottomleft, bool bottomright)
+        public ISprite CreateSubtile(Vector2 Origin, string fillTexture, string borderTexture, int X, int Y, int Xb, int Yb, bool topleft, bool topright, bool bottomleft, bool bottomright)
         {
             int tileHalfSize = Tile.Size / 2;
             int tileQuarterSize = Tile.Size / 4;
+            int tileThreeQuarters = Tile.Size - tileQuarterSize;
 
-            SandwichSprite subtileSprites = new SandwichSprite();
+            SandwichSprite subtileSprites = new SandwichSprite(Origin);
 
             if (topleft)
             {
@@ -44,44 +45,44 @@ namespace RogueNeverDie.Engine.Factories
             {
                 if (topleft)
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileHalfSize, 0) , MathHelper.PiOver2));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, Tile.Size), new Vector2(0, tileThreeQuarters) , MathHelper.PiOver2));
                 }
                 else
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(0, -tileQuarterSize), -MathHelper.PiOver2));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileThreeQuarters, Yb, tileQuarterSize, Tile.Size), new Vector2(tileQuarterSize, tileQuarterSize), -MathHelper.PiOver2));
                 }
             }
             if (topleft != bottomleft)
             {
                 if (topleft)
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileQuarterSize, -tileHalfSize), MathHelper.Pi));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(tileQuarterSize, tileThreeQuarters), MathHelper.Pi));
                 }
                 else
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize)));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileHalfSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(0, tileQuarterSize)));
                 }
             }
             if (bottomleft != bottomright)
             {
                 if (bottomleft)
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileHalfSize, -tileQuarterSize), MathHelper.PiOver2));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, Tile.Size), new Vector2(-tileQuarterSize, tileThreeQuarters), MathHelper.PiOver2));
                 }
                 else
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(0, -tileHalfSize), -MathHelper.PiOver2));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileThreeQuarters, Yb, tileQuarterSize, Tile.Size), new Vector2(tileHalfSize, tileQuarterSize), -MathHelper.PiOver2));
                 }
             }
             if (bottomright != topright)
             {
                 if (topright)
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileHalfSize, -tileHalfSize), MathHelper.Pi));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(tileHalfSize, Tile.Size - tileQuarterSize), MathHelper.Pi));
                 }
                 else
                 {
-                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileQuarterSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileQuarterSize, 0), MathHelper.Pi));
+                    subtileSprites.Add(_spriteFactory.Create(borderTexture, new Rectangle(Xb + tileHalfSize, Yb, tileQuarterSize, tileHalfSize), new Vector2(-tileQuarterSize, tileQuarterSize)));
                 }
             }
 

@@ -34,6 +34,9 @@ namespace RogueNeverDie
 		protected Level testLevel;
 
         ISprite test;
+        ISprite test2;
+        ISprite test3;
+        ISprite test4;
 
         public GameRogue()
         {
@@ -110,7 +113,29 @@ namespace RogueNeverDie
             }
             //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 
-            test = TileFactory.CreateSubtile("testTileset", "testTileset", 0, 0, 32, 0, true, false, false, false);
+            test = new SandwichSprite();
+            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, false, false, false, true));
+            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, false, false, true, true));
+            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, false, true, false, true));
+            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, true, true, true));
+
+            test2 = new SandwichSprite();
+            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, false, false, true, true));
+            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, false, false, true, false));
+            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, true, true, true, true));
+            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, false, true, false));
+
+            test3 = new SandwichSprite();
+            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, false, true, false, true));
+            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, true, true, true, true));
+            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, false, true, false, false));
+            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, true, false, false));
+
+            test4 = new SandwichSprite();
+            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, true, true, true, true));
+            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, true, false, true, false));
+            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, true, true, false, false));
+            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, false, false, false));
         }
 
         /// <summary>
@@ -144,7 +169,10 @@ namespace RogueNeverDie
 			// TODO: Add your drawing code here
 			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
             test.Draw(_spriteBatch, new Vector2(128, 128));
-			_stateManager.DrawStates(_spriteBatch, gameTime);
+            test2.Draw(_spriteBatch, new Vector2(160, 128));
+            test3.Draw(_spriteBatch, new Vector2(128, 160));
+            test4.Draw(_spriteBatch, new Vector2(160, 160));
+            _stateManager.DrawStates(_spriteBatch, gameTime);
             _spriteBatch.End();
 
             base.Draw(gameTime);
