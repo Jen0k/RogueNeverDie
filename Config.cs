@@ -7,6 +7,8 @@ namespace RogueNeverDie
 
 		public const string CommonFont = "Fonts/Common";
 
+        public const int TileSize = 32;
+
 		public const string ContentDirectory = "Content";
 		public const string ResoursesRootIndex = "Index.json";
 

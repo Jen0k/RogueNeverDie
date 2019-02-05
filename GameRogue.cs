@@ -33,10 +33,15 @@ namespace RogueNeverDie
 
 		protected Level testLevel;
 
-        ISprite test;
+        ISprite test1;
         ISprite test2;
         ISprite test3;
         ISprite test4;
+        ISprite test5;
+        ISprite test6;
+        ISprite test7;
+        ISprite test8;
+        ISprite test9;
 
         public GameRogue()
         {
@@ -113,29 +118,17 @@ namespace RogueNeverDie
             }
             //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 
-            test = new SandwichSprite();
-            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, false, false, false, true));
-            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, false, false, true, true));
-            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, false, true, false, true));
-            ((SandwichSprite)test).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, true, true, true));
+            test1 = TileFactory.Create("testAtlas", false, false, false, false, true, true, false, true, true);
+            test2 = TileFactory.Create("testAtlas", false, false, false, true, true, true, true, true, true);
+            test3 = TileFactory.Create("testAtlas", false, false, false, true, true, false, true, true, false);
 
-            test2 = new SandwichSprite();
-            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, false, false, true, true));
-            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, false, false, true, false));
-            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, true, true, true, true));
-            ((SandwichSprite)test2).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, false, true, false));
+            test4 = TileFactory.Create("testAtlas", false, true, true, false, true, true, false, true, true);
+            test5 = TileFactory.Create("testAtlas", true, true, true, true, true, true, true, true, true);
+            test6 = TileFactory.Create("testAtlas", true, true, false, true, true, false, true, true, false);
 
-            test3 = new SandwichSprite();
-            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, false, true, false, true));
-            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, true, true, true, true));
-            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, false, true, false, false));
-            ((SandwichSprite)test3).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, true, false, false));
-
-            test4 = new SandwichSprite();
-            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(0, 0), "testTileset", "testTileset", 0, 0, 32, 0, true, true, true, true));
-            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(16, 0), "testTileset", "testTileset", 16, 0, 32, 0, true, false, true, false));
-            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(0, 16), "testTileset", "testTileset", 0, 16, 32, 0, true, true, false, false));
-            ((SandwichSprite)test4).Add(TileFactory.CreateSubtile(new Vector2(16, 16), "testTileset", "testTileset", 16, 16, 32, 0, true, false, false, false));
+            test7 = TileFactory.Create("testAtlas", false, true, true, false, true, true, false, false, false);
+            test8 = TileFactory.Create("testAtlas", true, true, true, true, false, true, false, false, false);
+            test9 = TileFactory.Create("testAtlas", true, true, false, true, true, false, false, false, false);
         }
 
         /// <summary>
@@ -164,14 +157,19 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear(Color.Green);
+			GraphicsDevice.Clear(Color.Cyan);
             
 			// TODO: Add your drawing code here
 			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            test.Draw(_spriteBatch, new Vector2(128, 128));
+            test1.Draw(_spriteBatch, new Vector2(128, 128));
             test2.Draw(_spriteBatch, new Vector2(160, 128));
-            test3.Draw(_spriteBatch, new Vector2(128, 160));
-            test4.Draw(_spriteBatch, new Vector2(160, 160));
+            test3.Draw(_spriteBatch, new Vector2(192, 128));
+            test4.Draw(_spriteBatch, new Vector2(128, 160));
+            test5.Draw(_spriteBatch, new Vector2(160, 160));
+            test6.Draw(_spriteBatch, new Vector2(192, 160));
+            test7.Draw(_spriteBatch, new Vector2(128, 192));
+            test8.Draw(_spriteBatch, new Vector2(160, 192));
+            test9.Draw(_spriteBatch, new Vector2(192, 192));
             _stateManager.DrawStates(_spriteBatch, gameTime);
             _spriteBatch.End();
 

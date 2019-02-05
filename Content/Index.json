@@ -2,6 +2,7 @@
     "Index" :[
         "Config.json",
         "Fonts.json",
-        "Textures.json"
+        "Textures.json",
+        "TileAtlases.json"
     ]
 }

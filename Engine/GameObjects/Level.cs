@@ -22,8 +22,8 @@ namespace RogueNeverDie.Engine.GameObjects
 			}
 			set
 			{
-				int halfWidth = (int)(GameRogue.Graphics.PreferredBackBufferWidth / (double)Tile.Size) / 2;
-				int halfHeight = (int)(GameRogue.Graphics.PreferredBackBufferHeight / (double)Tile.Size) / 2;
+				int halfWidth = (int)(GameRogue.Graphics.PreferredBackBufferWidth / (double)Config.TileSize) / 2;
+				int halfHeight = (int)(GameRogue.Graphics.PreferredBackBufferHeight / (double)Config.TileSize) / 2;
 
 				_cameraPosition = new Vector2(Math.Min(Math.Max(-halfWidth, value.X), _levelSize.X - halfWidth), Math.Min(Math.Max(-halfHeight, value.Y), _levelSize.Y - halfHeight));
 			}
@@ -74,15 +74,15 @@ namespace RogueNeverDie.Engine.GameObjects
 			int testCounter = 0;
 
 			Point tilesInScreen = 
-				new Point((int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferWidth / (double)Tile.Size), 
-				          (int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferHeight / (double)Tile.Size));
+				new Point((int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferWidth / (double)Config.TileSize), 
+				          (int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferHeight / (double)Config.TileSize));
 			Point flooredCameraPosition = new Point((int)Math.Floor(_cameraPosition.X), (int)Math.Floor(_cameraPosition.Y));
 			for (int x = flooredCameraPosition.X; x <= (tilesInScreen.X + flooredCameraPosition.X); x++) {
 				for (int y = flooredCameraPosition.Y; y <= (tilesInScreen.Y + flooredCameraPosition.Y); y++) {
 					Point keyPoint = new Point(x, y);
 					if (_tiles.ContainsKey(keyPoint))
 					{
-                        _tiles[keyPoint].Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Tile.Size, (y - _cameraPosition.Y) * Tile.Size));
+                        _tiles[keyPoint].Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Config.TileSize, (y - _cameraPosition.Y) * Config.TileSize));
 						testCounter++;
 					}
 				}

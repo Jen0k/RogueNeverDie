@@ -4,8 +4,10 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RogueNeverDie.Engine.Factories;
 
 namespace RogueNeverDie.Engine
 {
@@ -47,22 +49,42 @@ namespace RogueNeverDie.Engine
 								break;
 							case "Config":
 								break;
-							case "Fonts":
+                            case "Fonts":
 							case "Textures":
-								List<JToken> childs = deserializedData[node].Children().ToList();
+                            case "TileAtlases":
+                                List<JToken> childs = deserializedData[node].Children().ToList();
 
-								foreach (JToken child in childs)
-								{
-									resourceManager.Store(child["id"].Value<string>(),
-															typeof(ContentManager).
-																GetMethod("Load").
-																	MakeGenericMethod(typeNameToType[node]).
-									                                    Invoke(contentManager, new object[] { child["path"].Value<string>() }));
-									// Это просто _contentManager.Load<T>() с динамически подставляемым Generic типом.
-								}
+                                foreach (JToken child in childs)
+                                {
+                                    if (typeNameToType.ContainsKey(node))
+                                    {
+                                        resourceManager.Store(child["id"].Value<string>(),
+                                                            typeof(ContentManager).
+                                                                GetMethod("Load").
+                                                                    MakeGenericMethod(typeNameToType[node]).
+                                                                        Invoke(contentManager, new object[] { child["path"].Value<string>() }));
+                                        // Это просто _contentManager.Load<T>() с динамически подставляемым Generic типом.
+                                    }
+                                    if (node == "TileAtlases")
+                                    {
+                                        TileAtlas tileAtlas = new TileAtlas(child["texture"].Value<string>(), new Color(
+                                            child["color"]["R"].Value<int>(),
+                                            child["color"]["G"].Value<int>(),
+                                            child["color"]["B"].Value<int>()));
 
-								break;
-							default:
+                                        foreach(JToken atlasNode in child["atlas"])
+                                        {
+                                            tileAtlas.Atlas.Add(atlasNode["type"].Value<string>(), new Point(
+                                                atlasNode["position"]["X"].Value<int>(),
+                                                atlasNode["position"]["Y"].Value<int>()
+                                            ), atlasNode["weight"].Value<int>());
+                                        }
+
+                                        resourceManager.Store(child["id"].Value<string>(), tileAtlas);
+                                    }
+                                }
+                                break;
+                            default:
 								GameRogue.LogManager.SendError(String.Format("Некорректный раздел {0} в конфиге!", node));
 								break;
 						}
