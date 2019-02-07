@@ -4,6 +4,7 @@
         { "id": "sonic", "path": "Textures/Common/sonic" },
         { "id": "animated", "path": "Textures/Common/testAnimWalking" },
         { "id": "defaultTileTexture", "path": "Textures/Common/DefTexture" },
-        { "id": "testTileset", "path": "Textures/TileSets/TestTileset" }
+        { "id": "testTileset", "path": "Textures/TileSets/TestTileset" },
+        { "id": "dungeonTileset", "path": "Textures/TileSets/DungeonTileset" }
     ]
 }

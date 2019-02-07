@@ -24,9 +24,19 @@ namespace RogueNeverDie.Engine.Factories
             return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero);
         }
 
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Color Color)
+        {
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, 0, Color);
+        }
+
         public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin)
         {
             return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin);
+        }
+
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, Color Color)
+        {
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, 0, Color);
         }
 
         public Sprite Create(string Texture, Rectangle ViewRectangle, float Rotation)
@@ -37,6 +47,11 @@ namespace RogueNeverDie.Engine.Factories
         public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation)
         {
             return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation);
+        }
+
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation, Color Color)
+        {
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation, Color);
         }
 
         public Sprite Create(string Texture, Rectangle ViewRectangle, float Rotation, Color Color)

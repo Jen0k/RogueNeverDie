@@ -69,6 +69,7 @@
     <Compile Include="Engine\GameObjects\SandwichSprite.cs" />
     <Compile Include="Engine\GameObjects\ISprite.cs" />
     <Compile Include="Engine\Factories\TileAtlas.cs" />
+    <Compile Include="Engine\Factories\LevelAtlas.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

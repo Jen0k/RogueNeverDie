@@ -26,6 +26,172 @@
                     }
                 }
             ]
+        },
+        {
+            "id": "dungeonBricks",
+            "texture": "dungeonTileset",
+            "color": { 
+                "R": 255, 
+                "G": 255,
+                "B": 255
+            },
+            "atlas": [
+                {
+                    "type": "fill",
+                    "weight": 100,
+                    "position": {
+                        "X": 0,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 32,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 64,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 96,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 128,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 160,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 192,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 192,
+                        "Y": 0
+                    }
+                },
+                {
+                    "type": "border",
+                    "weight": 1,
+                    "position": {
+                        "X": 0,
+                        "Y": 32
+                    }
+                }
+            ]
+        },
+        {
+            "id": "dungeonFloor",
+            "texture": "dungeonTileset",
+            "color": { 
+                "R": 255, 
+                "G": 255,
+                "B": 255
+            },
+            "atlas": [
+                {
+                    "type": "fill",
+                    "weight": 100,
+                    "position": {
+                        "X": 0,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 32,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 64,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 96,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 128,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 160,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 192,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "fill",
+                    "weight": 1,
+                    "position": {
+                        "X": 192,
+                        "Y": 64
+                    }
+                },
+                {
+                    "type": "border",
+                    "weight": 1,
+                    "position": {
+                        "X": 0,
+                        "Y": 96
+                    }
+                }
+            ]
         }
     ]
 }

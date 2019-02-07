@@ -1,12 +1,12 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
+
 namespace RogueNeverDie.Engine.Factories
 {
-    public class LevelFactory
+    public class LevelAtlas
     {
-        public LevelFactory()
+        public LevelAtlas()
         {
         }
-
-
     }
 }

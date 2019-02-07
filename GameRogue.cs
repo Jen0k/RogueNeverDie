@@ -118,17 +118,17 @@ namespace RogueNeverDie
             }
             //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 
-            test1 = TileFactory.Create("testAtlas", false, false, false, false, true, true, false, true, true);
-            test2 = TileFactory.Create("testAtlas", false, false, false, true, true, true, true, true, true);
-            test3 = TileFactory.Create("testAtlas", false, false, false, true, true, false, true, true, false);
+            test1 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, false, true, true, false, true, true);
+            test2 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, true, true, true, true);
+            test3 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, false, true, true, false);
 
-            test4 = TileFactory.Create("testAtlas", false, true, true, false, true, true, false, true, true);
-            test5 = TileFactory.Create("testAtlas", true, true, true, true, true, true, true, true, true);
-            test6 = TileFactory.Create("testAtlas", true, true, false, true, true, false, true, true, false);
+            test4 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, true, true);
+            test5 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, true, true, true, true, true);
+            test6 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, true, true, false);
 
-            test7 = TileFactory.Create("testAtlas", false, true, true, false, true, true, false, false, false);
-            test8 = TileFactory.Create("testAtlas", true, true, true, true, false, true, false, false, false);
-            test9 = TileFactory.Create("testAtlas", true, true, false, true, true, false, false, false, false);
+            test7 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, false, false);
+            test8 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, false, true, false, false, false);
+            test9 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, false, false, false);
         }
 
         /// <summary>

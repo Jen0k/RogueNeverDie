@@ -1,14 +1,23 @@
 ﻿{
     "Levels": [
         { 
-            "id": "dungeon01",
+            "id": "testroom",
             "height": 128,
             "width": 128,
             "generation": {
                 "type": "room",
                 "wallWidth": 3
             },
-            "tileset": "darkDungeon"
+            "tileset": [
+                {
+                    "atlas": "dungeonFloor",
+                    "layer": 0
+                },
+                {
+                    "atlas": "dungeonBricks",
+                    "layer": 1
+                }
+            ]
         }
     ]
 }
