@@ -52,6 +52,7 @@ namespace RogueNeverDie.Engine
                             case "Fonts":
 							case "Textures":
                             case "TileAtlases":
+                            case "LevelAtlases":
                                 List<JToken> childs = deserializedData[node].Children().ToList();
 
                                 foreach (JToken child in childs)
@@ -81,6 +82,28 @@ namespace RogueNeverDie.Engine
                                         }
 
                                         resourceManager.Store(child["id"].Value<string>(), tileAtlas);
+                                    }
+                                    if (node == "LevelAtlases")
+                                    {
+                                        LevelAtlas levelAtlas = new LevelAtlas(
+                                            new Point(child["size"]["X"].Value<int>(), 
+                                                      child["size"]["Y"].Value<int>()),
+                                            child["generation"]["type"].Value<string>()
+                                        );
+
+                                        foreach(JToken generationParam in child["generation"]["params"])
+                                        {
+                                            levelAtlas.GenerationParams.Add(generationParam["key"].Value<string>(), 
+                                                                            generationParam["value"].Value<string>());
+                                        }
+
+                                        foreach(JToken tilesetAtlas in child["tileset"])
+                                        {
+                                            levelAtlas.TileAtlases.Add(tilesetAtlas["layer"].Value<int>(), 
+                                                                       tilesetAtlas["atlas"].Value<string>());
+                                        }
+
+                                        resourceManager.Store(child["id"].Value<string>(), levelAtlas);
                                     }
                                 }
                                 break;

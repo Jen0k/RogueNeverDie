@@ -11,7 +11,7 @@ namespace RogueNeverDie.Engine.Factories
             this.Texture = Texture;
             this.Color = Color;
 
-            this.Atlas = new WeightSet<string, Point>();
+            Atlas = new WeightSet<string, Point>();
         }
 
         public string Texture;

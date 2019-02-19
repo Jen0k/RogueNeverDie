@@ -19,63 +19,24 @@ namespace RogueNeverDie.Engine.Factories
             return new Sprite(_resourceManager.Load<Texture2D>(Texture));
         }
 
-        public Sprite Create(string Texture, Rectangle ViewRectangle)
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Color Color, float DrawDepth)
         {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero);
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, 0, Color, 1, DrawDepth);
         }
 
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Color Color)
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, Color Color, float DrawDepth)
         {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, 0, Color);
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, 0, Color, 1, DrawDepth);
         }
 
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin)
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation, Color Color, float DrawDepth)
         {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin);
-        }
-
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, Color Color)
-        {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, 0, Color);
-        }
-
-        public Sprite Create(string Texture, Rectangle ViewRectangle, float Rotation)
-        {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, Rotation);
-        }
-
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation)
-        {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation);
-        }
-
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation, Color Color)
-        {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation, Color);
-        }
-
-        public Sprite Create(string Texture, Rectangle ViewRectangle, float Rotation, Color Color)
-        {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, Rotation, Color);
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation, Color, 1, DrawDepth);
         }
 
         public Sprite CreateAnimated(string Texture, int FramesTotal, int FramesPerLine, int FramesPerSecond)
         {
             AnimatedSprite sprite = new AnimatedSprite(_resourceManager.Load<Texture2D>(Texture), FramesTotal, FramesPerLine, FramesPerSecond);
-            _animatedSprites.AddLast(sprite);
-            return sprite;
-        }
-
-        public Sprite CreateAnimated(string Texture, Rectangle ViewRectangle, float Rotation, int FramesTotal, int FramesPerLine, int FramesPerSecond)
-        {
-            AnimatedSprite sprite = new AnimatedSprite(_resourceManager.Load<Texture2D>(Texture), FramesTotal, FramesPerLine, FramesPerSecond, ViewRectangle, Vector2.Zero, Rotation);
-            _animatedSprites.AddLast(sprite);
-            return sprite;
-        }
-
-        public Sprite CreateAnimated(string Texture, Rectangle ViewRectangle, float Rotation, Color Color, int FramesTotal, int FramesPerLine, int FramesPerSecond)
-        {
-            AnimatedSprite sprite = new AnimatedSprite(_resourceManager.Load<Texture2D>(Texture), FramesTotal, FramesPerLine, FramesPerSecond, ViewRectangle, Vector2.Zero, Rotation, Color);
             _animatedSprites.AddLast(sprite);
             return sprite;
         }

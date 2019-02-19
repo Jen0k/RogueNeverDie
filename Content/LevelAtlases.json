@@ -1,12 +1,19 @@
 ﻿{
-    "Levels": [
+    "LevelAtlases": [
         { 
             "id": "testroom",
-            "height": 128,
-            "width": 128,
+            "size": {
+                "X": 128,
+                "Y": 128
+            },
             "generation": {
                 "type": "room",
-                "wallWidth": 3
+                "params": [
+                    {
+                        "key": "wallWidth",
+                        "value": 3
+                    }
+                ]
             },
             "tileset": [
                 {

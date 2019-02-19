@@ -70,6 +70,7 @@
     <Compile Include="Engine\GameObjects\ISprite.cs" />
     <Compile Include="Engine\Factories\TileAtlas.cs" />
     <Compile Include="Engine\Factories\LevelAtlas.cs" />
+    <Compile Include="Engine\GameObjects\PhantomSprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -99,7 +100,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Content\Levels.json">
+    <None Include="Content\LevelAtlases.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\TileAtlases.json">

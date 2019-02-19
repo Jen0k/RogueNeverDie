@@ -114,21 +114,28 @@ namespace RogueNeverDie
                 for (int j = 0; j < 100; j++)
                 {
                     //Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
+                    Tile newTile = new Tile(testLevel, new Point(i, j), 1);
+                    newTile.SetLayer(1, TileFactory.CreateLayer("dungeonBricks", Color.Green, 0.4f));
+
+                    if (i % 2 == 0 && j % 2 == 0)
+                    {
+                        newTile.SetLayer(3, TileFactory.CreateLayer("dungeonBricks", Color.Red, 0.5f));
+                    }
                 }
             }
-            //_stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 
-            test1 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, false, true, true, false, true, true);
-            test2 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, true, true, true, true);
-            test3 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, false, true, true, false);
+            //test1 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, false, true, true, false, true, true);
+            //test2 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, true, true, true, true);
+            //test3 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, false, true, true, false);
 
-            test4 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, true, true);
-            test5 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, true, true, true, true, true);
-            test6 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, true, true, false);
+            //test4 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, true, true);
+            //test5 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, true, true, true, true, true);
+            //test6 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, true, true, false);
 
-            test7 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, false, false);
-            test8 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, false, true, false, false, false);
-            test9 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, false, false, false);
+            //test7 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, false, false);
+            //test8 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, false, true, false, false, false);
+            //test9 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, false, false, false);
         }
 
         /// <summary>
@@ -161,15 +168,15 @@ namespace RogueNeverDie
             
 			// TODO: Add your drawing code here
 			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            test1.Draw(_spriteBatch, new Vector2(128, 128));
-            test2.Draw(_spriteBatch, new Vector2(160, 128));
-            test3.Draw(_spriteBatch, new Vector2(192, 128));
-            test4.Draw(_spriteBatch, new Vector2(128, 160));
-            test5.Draw(_spriteBatch, new Vector2(160, 160));
-            test6.Draw(_spriteBatch, new Vector2(192, 160));
-            test7.Draw(_spriteBatch, new Vector2(128, 192));
-            test8.Draw(_spriteBatch, new Vector2(160, 192));
-            test9.Draw(_spriteBatch, new Vector2(192, 192));
+            //test1.Draw(_spriteBatch, new Vector2(128, 128));
+            //test2.Draw(_spriteBatch, new Vector2(160, 128));
+            //test3.Draw(_spriteBatch, new Vector2(192, 128));
+            //test4.Draw(_spriteBatch, new Vector2(128, 160));
+            //test5.Draw(_spriteBatch, new Vector2(160, 160));
+            //test6.Draw(_spriteBatch, new Vector2(192, 160));
+            //test7.Draw(_spriteBatch, new Vector2(128, 192));
+            //test8.Draw(_spriteBatch, new Vector2(160, 192));
+            //test9.Draw(_spriteBatch, new Vector2(192, 192));
             _stateManager.DrawStates(_spriteBatch, gameTime);
             _spriteBatch.End();
 

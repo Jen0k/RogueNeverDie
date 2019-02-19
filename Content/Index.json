@@ -3,6 +3,7 @@
         "Config.json",
         "Fonts.json",
         "Textures.json",
-        "TileAtlases.json"
+        "TileAtlases.json",
+        "LevelAtlases.json"
     ]
 }
