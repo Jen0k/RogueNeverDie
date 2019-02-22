@@ -22,6 +22,7 @@ namespace RogueNeverDie
 
         public static SpriteFactory SpriteFactory;
         public static TileFactory TileFactory;
+        public static LevelFactory LevelFactory;
 
 		protected SpriteBatch _spriteBatch;
 		protected ResourceManager _resourceManager;
@@ -33,7 +34,7 @@ namespace RogueNeverDie
 
 		protected Level testLevel;
 
-        ISprite test1;
+       /*ISprite test1;
         ISprite test2;
         ISprite test3;
         ISprite test4;
@@ -41,7 +42,7 @@ namespace RogueNeverDie
         ISprite test6;
         ISprite test7;
         ISprite test8;
-        ISprite test9;
+        ISprite test9;*/
 
         public GameRogue()
         {
@@ -102,6 +103,7 @@ namespace RogueNeverDie
             _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
                 new Dictionary<string, object>());
             TileFactory = new TileFactory(_resourceManager, SpriteFactory);
+            LevelFactory = new LevelFactory(_resourceManager, TileFactory);
 
             _commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
 			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, 
@@ -117,12 +119,15 @@ namespace RogueNeverDie
                     Tile newTile = new Tile(testLevel, new Point(i, j), 1);
                     newTile.SetLayer(1, TileFactory.CreateLayer("dungeonBricks", Color.Green, 0.4f));
 
-                    if (i % 2 == 0 && j % 2 == 0)
+                    /*if (i % 2 == 0 && j % 2 == 0)
                     {
                         newTile.SetLayer(3, TileFactory.CreateLayer("dungeonBricks", Color.Red, 0.5f));
-                    }
+                    }*/
                 }
             }
+
+            LevelFactory.FillRectangle(testLevel, "dungeonBricks", new Rectangle(1, 1, 5, 5), 3, true);
+
             _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 
             //test1 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, false, true, true, false, true, true);

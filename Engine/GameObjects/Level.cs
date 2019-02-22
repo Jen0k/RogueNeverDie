@@ -7,45 +7,47 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RogueNeverDie.Engine.GameObjects
 {
-	public class Level : IStateUpdate, IStateDraw
+    public class Level : IStateUpdate, IStateDraw
     {
-		public Level(Point levelSize)
+        public Level(Point levelSize)
         {
-			_levelSize = levelSize;
-			_tiles = new Dictionary<Point, Tile>(_levelSize.X * _levelSize.Y);
+            _levelSize = levelSize;
+            _tileGrid = new Dictionary<Point, Tile>(_levelSize.X * _levelSize.Y);
         }
 
-		public Vector2 CameraPosition {
-			get
-			{
-				return _cameraPosition;
-			}
-			set
-			{
-				int halfWidth = (int)(GameRogue.Graphics.PreferredBackBufferWidth / (double)Config.TileSize) / 2;
-				int halfHeight = (int)(GameRogue.Graphics.PreferredBackBufferHeight / (double)Config.TileSize) / 2;
+        public Vector2 CameraPosition {
+            get
+            {
+                return _cameraPosition;
+            }
+            set
+            {
+                int halfWidth = (int)(GameRogue.Graphics.PreferredBackBufferWidth / (double)Config.TileSize) / 2;
+                int halfHeight = (int)(GameRogue.Graphics.PreferredBackBufferHeight / (double)Config.TileSize) / 2;
 
-				_cameraPosition = new Vector2(Math.Min(Math.Max(-halfWidth, value.X), _levelSize.X - halfWidth), Math.Min(Math.Max(-halfHeight, value.Y), _levelSize.Y - halfHeight));
-			}
-		}
+                _cameraPosition = new Vector2(Math.Min(Math.Max(-halfWidth, value.X), _levelSize.X - halfWidth), Math.Min(Math.Max(-halfHeight, value.Y), _levelSize.Y - halfHeight));
+            }
+        }
 
-		protected Vector2 _cameraPosition;
-		protected Point _levelSize;
-		protected Dictionary<Point, Tile> _tiles;
-        
-		public void SetTile(Tile tile) {
-			if (tile.Coordinates.X < 0 || tile.Coordinates.X >= _levelSize.X || tile.Coordinates.Y < 0 || tile.Coordinates.Y >= _levelSize.Y) {
-				throw new IndexOutOfRangeException("Координаты тайла за пределами уровня!");
-			}
+        protected Vector2 _cameraPosition;
+        protected Point _levelSize;
+        protected Dictionary<Point, Tile> _tileGrid;
 
-			_tiles[tile.Coordinates] = tile;
-		}
+        public void SetTile(Tile tile) {
+            if (tile.Coordinates.X < 0 || tile.Coordinates.X >= _levelSize.X || tile.Coordinates.Y < 0 || tile.Coordinates.Y >= _levelSize.Y) {
+                throw new IndexOutOfRangeException("Координаты тайла за пределами уровня!");
+            }
 
-		public bool TileBelongs(Tile tile) {
-			return _tiles.ContainsValue(tile);
-		}
+            _tileGrid[tile.Coordinates] = tile;
+        }
 
-		public void Update(GameTime gameTime, Dictionary<string, object> parameters)
+        public bool TileBelongs(Tile tile) {
+            return _tileGrid.ContainsValue(tile);
+        }
+
+        public IReadOnlyDictionary<Point, Tile> TileGrid { get => _tileGrid; }
+
+        public void Update(GameTime gameTime, Dictionary<string, object> parameters)
 		{
 			KeyboardState keyboardState = Keyboard.GetState();
 
@@ -80,9 +82,9 @@ namespace RogueNeverDie.Engine.GameObjects
 			for (int x = flooredCameraPosition.X; x <= (tilesInScreen.X + flooredCameraPosition.X); x++) {
 				for (int y = flooredCameraPosition.Y; y <= (tilesInScreen.Y + flooredCameraPosition.Y); y++) {
 					Point keyPoint = new Point(x, y);
-					if (_tiles.ContainsKey(keyPoint))
+					if (_tileGrid.ContainsKey(keyPoint))
 					{
-                        _tiles[keyPoint].Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Config.TileSize, (y - _cameraPosition.Y) * Config.TileSize));
+                        _tileGrid[keyPoint].Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Config.TileSize, (y - _cameraPosition.Y) * Config.TileSize));
 						testCounter++;
 					}
 				}
