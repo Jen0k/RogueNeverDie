@@ -23,11 +23,17 @@ namespace RogueNeverDie.Engine.GameObjects
         public float Rotation;
         public Color Color;
         public float Scale;
-        public float DrawDepth;
+
+        protected float _drawDepth;
+        public float DrawDepth
+        {
+            get => _drawDepth;
+            set => _drawDepth = value;
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.Draw(Texture, position, ViewRectangle, Color, Rotation, Origin, Scale, SpriteEffects.None, DrawDepth);
+            spriteBatch.Draw(Texture, position, ViewRectangle, Color, Rotation, Origin, Scale, SpriteEffects.None, _drawDepth);
         }
     }
 }

@@ -46,6 +46,7 @@ namespace RogueNeverDie.Engine.GameObjects
             }
 
             _spriteLayers[layer] = sprite;
+            _spriteLayers[layer].DrawDepth = _parent.DrawDepth + (layer * Config.DepthBetweenTileLayers);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position)

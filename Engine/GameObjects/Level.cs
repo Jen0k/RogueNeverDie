@@ -9,8 +9,9 @@ namespace RogueNeverDie.Engine.GameObjects
 {
     public class Level : IStateUpdate, IStateDraw
     {
-        public Level(Point levelSize)
+        public Level(Point levelSize, float DrawDepth = 0.5f)
         {
+            _drawDepth = DrawDepth;
             _levelSize = levelSize;
             _tileGrid = new Dictionary<Point, Tile>(_levelSize.X * _levelSize.Y);
         }
@@ -27,6 +28,13 @@ namespace RogueNeverDie.Engine.GameObjects
 
                 _cameraPosition = new Vector2(Math.Min(Math.Max(-halfWidth, value.X), _levelSize.X - halfWidth), Math.Min(Math.Max(-halfHeight, value.Y), _levelSize.Y - halfHeight));
             }
+        }
+
+        protected float _drawDepth;
+        public float DrawDepth
+        {
+            get => _drawDepth;
+            set => _drawDepth = value;
         }
 
         protected Vector2 _cameraPosition;

@@ -8,6 +8,8 @@ namespace RogueNeverDie.Engine.GameObjects
     {
         public static PhantomSprite Instanse = new PhantomSprite();
 
+        public float DrawDepth { get => 0; set { } }
+
         public void Draw(SpriteBatch spriteBatch, Vector2 position) { }
     }
 }

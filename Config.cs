@@ -9,6 +9,9 @@ namespace RogueNeverDie
 
         public const int TileSize = 32;
 
+        public const float DepthBetweenSpriteLayers = 0.0000001f;
+        public const float DepthBetweenTileLayers = 0.0001f;
+
 		public const string ContentDirectory = "Content";
 		public const string ResoursesRootIndex = "Index.json";
 
