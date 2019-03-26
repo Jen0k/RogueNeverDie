@@ -19,19 +19,19 @@ namespace RogueNeverDie.Engine.Factories
             return new Sprite(_resourceManager.Load<Texture2D>(Texture));
         }
 
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Color Color, float DrawDepth)
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Color Color)
         {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, 0, Color, 1, DrawDepth);
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Vector2.Zero, 0, Color, 1, 0);
         }
 
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, Color Color, float DrawDepth)
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, Color Color)
         {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, 0, Color, 1, DrawDepth);
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, 0, Color, 1, 0);
         }
 
-        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation, Color Color, float DrawDepth)
+        public Sprite Create(string Texture, Rectangle ViewRectangle, Vector2 Origin, float Rotation, Color Color)
         {
-            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation, Color, 1, DrawDepth);
+            return new Sprite(_resourceManager.Load<Texture2D>(Texture), ViewRectangle, Origin, Rotation, Color, 1, 0);
         }
 
         public Sprite CreateAnimated(string Texture, int FramesTotal, int FramesPerLine, int FramesPerSecond)

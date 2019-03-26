@@ -7,7 +7,7 @@ namespace RogueNeverDie.Engine.GameObjects
 {
     public class Tile
     {
-		public Tile(Level parentLevel, Point coordinates, int layers)
+		public Tile(Level parentLevel, Point coordinates, int layers = 1)
         {
 			_parent = parentLevel;
 			_coordinates = coordinates;
@@ -16,7 +16,7 @@ namespace RogueNeverDie.Engine.GameObjects
 
             for (int i = 0; i < _spriteLayers.Length; i++)
             {
-                _spriteLayers[i] = PhantomSprite.Instanse;
+                _spriteLayers[i] = new PhantomSprite(_parent.DrawDepth + (i * Config.DepthBetweenTileLayers));
             }
 
             parentLevel.SetTile(this);
@@ -39,7 +39,7 @@ namespace RogueNeverDie.Engine.GameObjects
 
                 for (int i = _spriteLayers.Length; i < layer; i++)
                 {
-                    newSpriteLayers[i] = PhantomSprite.Instanse;
+                    newSpriteLayers[i] = new PhantomSprite(_parent.DrawDepth + (i * Config.DepthBetweenTileLayers));
                 }
 
                 _spriteLayers = newSpriteLayers;

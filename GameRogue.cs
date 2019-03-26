@@ -16,39 +16,29 @@ namespace RogueNeverDie
     /// This is the main type for your game.
     /// </summary>
     public class GameRogue : Game
-    {      
-		public static GraphicsDeviceManager Graphics;      
-		public static LogManager LogManager;
+    {
+        public static GraphicsDeviceManager Graphics;
+        public static LogManager LogManager;
 
         public static SpriteFactory SpriteFactory;
         public static TileFactory TileFactory;
         public static LevelFactory LevelFactory;
 
-		protected SpriteBatch _spriteBatch;
-		protected ResourceManager _resourceManager;
-		protected StateManager _stateManager;
-		protected ResourseLoader _resourseLoader;
-		protected Commander _commander;
+        protected SpriteBatch _spriteBatch;
+        protected ResourceManager _resourceManager;
+        protected StateManager _stateManager;
+        protected ResourseLoader _resourseLoader;
+        protected Commander _commander;
 
-		protected SpriteFont commonFont;
+        protected SpriteFont commonFont;
 
-		protected Level testLevel;
-
-       /*ISprite test1;
-        ISprite test2;
-        ISprite test3;
-        ISprite test4;
-        ISprite test5;
-        ISprite test6;
-        ISprite test7;
-        ISprite test8;
-        ISprite test9;*/
+        protected Level testLevel;
 
         public GameRogue()
         {
             Graphics = new GraphicsDeviceManager(this);
 
-			Content.RootDirectory = Config.ContentDirectory;
+            Content.RootDirectory = Config.ContentDirectory;
         }
 
         /// <summary>
@@ -59,13 +49,13 @@ namespace RogueNeverDie
         /// </summary>
         protected override void Initialize()
         {
-			// TODO: Add your initialization logic here         
-			_stateManager = new StateManager();
+            // TODO: Add your initialization logic here         
+            _stateManager = new StateManager();
 
-            _stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update, 
+            _stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update,
                 new Dictionary<string, object> { { "game", this } });
 
-			_stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update, 
+            _stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update,
                 new Dictionary<string, object> { { "graphics", Graphics } });
 
             Graphics.PreferredBackBufferWidth = Config.ScreenWight;
@@ -82,22 +72,22 @@ namespace RogueNeverDie
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-			_spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			// TODO: use this.Content to load your game content here
-			commonFont = Content.Load<SpriteFont>(Config.CommonFont);
+            // TODO: use this.Content to load your game content here
+            commonFont = Content.Load<SpriteFont>(Config.CommonFont);
 
-			if (LogManager == null)
-			{
-				LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 32), 0, commonFont, Color.Green, 5000);
+            if (LogManager == null)
+            {
+                LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 32), 0, commonFont, Color.Green, 5000);
 
-				_stateManager.AddState("logger", LogManager.Update, LogManager.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
-			}
+                _stateManager.AddState("logger", LogManager.Update, LogManager.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            }
 
-			_resourceManager = new ResourceManager();
+            _resourceManager = new ResourceManager();
 
-			_resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
-			_resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
+            _resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
+            _resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
 
             SpriteFactory = new SpriteFactory(_resourceManager);
             _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
@@ -106,41 +96,24 @@ namespace RogueNeverDie
             LevelFactory = new LevelFactory(_resourceManager, TileFactory);
 
             _commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
-			_stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing, 
+            _stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing,
                 new Dictionary<string, object> { { "gameWindow", Window } });
 
-			testLevel = new Level(new Point(100, 100));
+            testLevel = new Level(new Point(15, 15));
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 15; i++)
             {
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < 15; j++)
                 {
-                    //Tile newTile = new Tile(testLevel, new Point(i, j), new Sprite(_resourceManager.Load<Texture2D>("defaultTileTexture"), new Rectangle(0, 0, 32, 32)));
-                    Tile newTile = new Tile(testLevel, new Point(i, j), 1);
-                    newTile.SetLayer(1, TileFactory.CreateLayer("dungeonBricks", Color.Green, 0.4f));
-
-                    /*if (i % 2 == 0 && j % 2 == 0)
-                    {
-                        newTile.SetLayer(3, TileFactory.CreateLayer("dungeonBricks", Color.Red, 0.5f));
-                    }*/
+                    Tile newTile = new Tile(testLevel, new Point(i, j));
+                    newTile.SetLayer(0, TileFactory.CreateLayer("dungeonBricks", Color.Green));
                 }
             }
 
-            LevelFactory.FillRectangle(testLevel, "dungeonBricks", new Rectangle(1, 1, 5, 5), 3, true);
+            LevelFactory.FillRectangle(testLevel, "dungeonBricks", Color.Red, new Rectangle(1, 1, 5, 5), 2, true);
+            LevelFactory.FillRectangle(testLevel, "dungeonBricks", Color.Blue, new Rectangle(3, 3, 5, 5), 1, true);
 
             _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
-
-            //test1 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, false, true, true, false, true, true);
-            //test2 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, true, true, true, true);
-            //test3 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, false, false, true, true, false, true, true, false);
-
-            //test4 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, true, true);
-            //test5 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, true, true, true, true, true);
-            //test6 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, true, true, false);
-
-            //test7 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, false, true, true, false, true, true, false, false, false);
-            //test8 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, true, true, false, true, false, false, false);
-            //test9 = TileFactory.CreateLayer("dungeonBricks", Color.Blue, true, true, false, true, true, false, false, false, false);
         }
 
         /// <summary>
@@ -151,15 +124,15 @@ namespace RogueNeverDie
         {
             // TODO: Unload any non ContentManager content here
         }
-        
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {                   
-			_stateManager.UpdateStates(gameTime);
+        {
+            _stateManager.UpdateStates(gameTime);
             base.Update(gameTime);
         }
 
@@ -169,19 +142,10 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear(Color.Cyan);
-            
-			// TODO: Add your drawing code here
-			_spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            //test1.Draw(_spriteBatch, new Vector2(128, 128));
-            //test2.Draw(_spriteBatch, new Vector2(160, 128));
-            //test3.Draw(_spriteBatch, new Vector2(192, 128));
-            //test4.Draw(_spriteBatch, new Vector2(128, 160));
-            //test5.Draw(_spriteBatch, new Vector2(160, 160));
-            //test6.Draw(_spriteBatch, new Vector2(192, 160));
-            //test7.Draw(_spriteBatch, new Vector2(128, 192));
-            //test8.Draw(_spriteBatch, new Vector2(160, 192));
-            //test9.Draw(_spriteBatch, new Vector2(192, 192));
+            GraphicsDevice.Clear(Color.Cyan);
+
+            // TODO: Add your drawing code here
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp);
             _stateManager.DrawStates(_spriteBatch, gameTime);
             _spriteBatch.End();
 

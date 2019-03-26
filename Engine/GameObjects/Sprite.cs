@@ -31,6 +31,11 @@ namespace RogueNeverDie.Engine.GameObjects
             set => _drawDepth = value;
         }
 
+        public float DrawGauge
+        {
+            get => Config.DepthBetweenSpriteLayers;
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             spriteBatch.Draw(Texture, position, ViewRectangle, Color, Rotation, Origin, Scale, SpriteEffects.None, _drawDepth);

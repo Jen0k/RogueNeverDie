@@ -21,7 +21,7 @@ namespace RogueNeverDie.Engine.Factories
 
         }
 
-        public void FillRectangle(Level level, string atlas, Rectangle field, int layer, bool outerBorder = false)
+        public void FillRectangle(Level level, string atlas, Color color, Rectangle field, int layer, bool outerBorder = false)
         {
             IReadOnlyDictionary<Point, Tile> tileGrid = level.TileGrid;
 
@@ -32,44 +32,68 @@ namespace RogueNeverDie.Engine.Factories
                     {
                         if (x == field.Left && y == field.Top)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, false, false, false, false, true, true, false, true, true));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                false, false, false, 
+                                                                                false, true, true, 
+                                                                                false, true, true));
                         }
                         else if (x == field.Right - 1 && y == field.Top)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, false, false, false, true, true, false, true, true, false));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                false, false, false, 
+                                                                                true, true, false, 
+                                                                                true, true, false));
                         }
                         else if (x == field.Left && y == field.Bottom - 1)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, false, true, true, false, true, true, false, false, false));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                false, true, true, 
+                                                                                false, true, true, 
+                                                                                false, false, false));
                         }
                         else if (x == field.Right - 1 && y == field.Bottom - 1)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, true, true, false, true, true, false, false, false, false));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                true, true, false, 
+                                                                                true, true, false, 
+                                                                                false, false, false));
                         }
                         else if (x == field.Left)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, false, true, true, false, true, true, false, true, true));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                false, true, true, 
+                                                                                false, true, true, 
+                                                                                false, true, true));
                         }
                         else if (x == field.Right - 1)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, true, true, false, true, true, false, true, true, false));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                true, true, false, 
+                                                                                true, true, false, 
+                                                                                true, true, false));
                         }
                         else if (y == field.Top)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, false, false, false, true, true, true, true, true, true));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                false, false, false, 
+                                                                                true, true, true, 
+                                                                                true, true, true));
                         }
                         else if (y == field.Bottom - 1)
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f, true, true, true, true, true, true, false, false, false));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color, 
+                                                                                true, true, true,
+                                                                                true, true, true, 
+                                                                                false, false, false));
                         }
                         else
                         {
-                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f));
+                            level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color));
                         }
                     }
                     else
                     {
-                        level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, Color.Red, 0.5f));
+                        level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color));
                     }
                 }
             }
