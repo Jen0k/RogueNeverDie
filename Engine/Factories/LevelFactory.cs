@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using RogueNeverDie.Engine.GameObjects;
+using RogueNeverDie.Engine.Common;
 
 namespace RogueNeverDie.Engine.Factories
 {
@@ -96,6 +98,45 @@ namespace RogueNeverDie.Engine.Factories
                         level.TileGrid[new Point(x, y)].SetLayer(layer, _tileFactory.CreateLayer(atlas, color));
                     }
                 }
+            }
+        }
+
+        public void GenerateNonRegularDungeon(Level level)
+        {
+            int roomSideMaxLength = 25;
+            int roomSideMinLenght = 10;
+            int channelMaxLength = 20;
+            int channelMaxWidth = 3;
+
+            int makeBranchMaxTrys = 5;
+            int branchesPerRoomSide = 3;
+
+            int levelMinX = level.TileGrid.Keys.Min(x => x.X);
+            int levelMinY = level.TileGrid.Keys.Min(y => y.Y);
+            Rectangle levelBounds = new Rectangle(
+                    levelMinX,
+                    levelMinY,
+                    level.TileGrid.Keys.Max(x => x.X) - levelMinX + 1,
+                    level.TileGrid.Keys.Max(y => y.Y) - levelMinY + 1
+                );
+
+            Dictionary<Point, bool> pathMatrix = new Dictionary<Point, bool>(level.TileGrid.Count);
+
+            Queue<Rectangle> rooms = new Queue<Rectangle>();
+
+            int newRoomWidth = Math.Min(levelBounds.Width, RandomSingle.Instanse.Next(roomSideMinLenght, roomSideMaxLength));
+            int newRoomHeigth = Math.Min(levelBounds.Height, RandomSingle.Instanse.Next(roomSideMinLenght, roomSideMaxLength));
+            Rectangle firstRoom = new Rectangle(
+                    RandomSingle.Instanse.Next(0, levelBounds.Right - newRoomWidth),
+                    RandomSingle.Instanse.Next(0, levelBounds.Bottom - newRoomHeigth),
+                    newRoomWidth,
+                    newRoomHeigth
+                );
+            rooms.Enqueue(firstRoom);
+
+            while(rooms.Count > 0)
+            {
+
             }
         }
     }
