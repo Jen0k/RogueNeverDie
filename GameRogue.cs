@@ -99,19 +99,21 @@ namespace RogueNeverDie
             _stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing,
                 new Dictionary<string, object> { { "gameWindow", Window } });
 
-            testLevel = new Level(new Point(15, 15));
+            testLevel = new Level(new Point(400, 400));
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 400; i++)
             {
-                for (int j = 0; j < 15; j++)
+                for (int j = 0; j < 400; j++)
                 {
                     Tile newTile = new Tile(testLevel, new Point(i, j));
                     newTile.SetLayer(0, TileFactory.CreateLayer("dungeonBricks", Color.Green));
                 }
             }
 
-            LevelFactory.FillRectangle(testLevel, "dungeonBricks", Color.Red, new Rectangle(1, 1, 5, 5), 2, true);
-            LevelFactory.FillRectangle(testLevel, "dungeonBricks", Color.Blue, new Rectangle(3, 3, 5, 5), 1, true);
+            //LevelFactory.FillRectangle(testLevel, "dungeonBricks", Color.Red, new Rectangle(1, 1, 5, 5), 2, true);
+            //LevelFactory.FillRectangle(testLevel, "dungeonBricks", Color.Blue, new Rectangle(3, 3, 5, 5), 1, true);
+
+            LevelFactory.GenerateNonRegularDungeon(testLevel);
 
             _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
         }

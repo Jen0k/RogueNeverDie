@@ -106,7 +106,9 @@ namespace RogueNeverDie.Engine.Factories
             int roomSideMaxLength = 25;
             int roomSideMinLenght = 10;
             int channelMaxLength = 20;
+            int channelMinLength = 3;
             int channelMaxWidth = 3;
+            int channelMinWidth = 1;
 
             int makeBranchMaxTrys = 5;
             int branchesPerRoomSide = 3;
@@ -123,6 +125,8 @@ namespace RogueNeverDie.Engine.Factories
             Dictionary<Point, bool> pathMatrix = new Dictionary<Point, bool>(level.TileGrid.Count);
 
             Queue<Rectangle> rooms = new Queue<Rectangle>();
+            LinkedList<Rectangle> acceptedRooms = new LinkedList<Rectangle>();
+            LinkedList<Rectangle> acceptedChannels = new LinkedList<Rectangle>();
 
             int newRoomWidth = Math.Min(levelBounds.Width, RandomSingle.Instanse.Next(roomSideMinLenght, roomSideMaxLength));
             int newRoomHeigth = Math.Min(levelBounds.Height, RandomSingle.Instanse.Next(roomSideMinLenght, roomSideMaxLength));
@@ -136,7 +140,145 @@ namespace RogueNeverDie.Engine.Factories
 
             while(rooms.Count > 0)
             {
+                Rectangle currentRoom = rooms.Dequeue();
+                // 0 - Вверх, 1 - вправо, 2 - вниз, 3 - влево
+                for (int direction = 0; direction < 4; direction++)
+                {
+                    int trysCount = 0;
+                    int successCount = 0;
 
+                    while (trysCount < makeBranchMaxTrys && successCount < branchesPerRoomSide)
+                    {
+                        int channelLength = RandomSingle.Instanse.Next(channelMinLength, channelMaxLength + 1);
+                        int channelWidth = RandomSingle.Instanse.Next(channelMinWidth, channelMaxWidth + 1);
+
+                        Rectangle newChannel = Rectangle.Empty;
+                        switch (direction)
+                        {
+                            case 0:
+                                newChannel = new Rectangle(
+                                    RandomSingle.Instanse.Next(currentRoom.Left, currentRoom.Right - channelWidth),
+                                    currentRoom.Top - channelLength,
+                                    channelWidth,
+                                    channelLength
+                                );
+                                break;
+                            case 1:
+                                newChannel = new Rectangle(
+                                    currentRoom.Right,
+                                    RandomSingle.Instanse.Next(currentRoom.Top, currentRoom.Bottom - channelWidth),
+                                    channelLength,
+                                    channelWidth
+                                );
+                                break;
+                            case 2:
+                                newChannel = new Rectangle(
+                                    RandomSingle.Instanse.Next(currentRoom.Left, currentRoom.Right - channelWidth),
+                                    currentRoom.Bottom,
+                                    channelWidth,
+                                    channelLength
+                                );
+                                break;
+                            case 3:
+                                newChannel = new Rectangle(
+                                    currentRoom.Left - channelLength,
+                                    RandomSingle.Instanse.Next(currentRoom.Top, currentRoom.Bottom - channelWidth),
+                                    channelLength,
+                                    channelWidth
+                                );
+                                break;
+                        }
+
+                        if (acceptedRooms.Any(c => c.Intersects(newChannel)) 
+                            || acceptedChannels.Any(c => c.Intersects(newChannel))
+                            || newChannel.Top < levelBounds.Top
+                            || newChannel.Bottom > levelBounds.Bottom
+                            || newChannel.Left < levelBounds.Left
+                            || newChannel.Right > levelBounds.Right)
+                        {
+                            trysCount++;
+                            continue;
+                        }
+
+                        Point roomSize = new Point(
+                                RandomSingle.Instanse.Next(roomSideMinLenght, roomSideMaxLength + 1),
+                                RandomSingle.Instanse.Next(roomSideMinLenght, roomSideMaxLength + 1)
+                            );
+
+                        Rectangle newRoom = Rectangle.Empty;
+                        switch(direction)
+                        {
+                            case 0:
+                                newRoom = new Rectangle(
+                                    RandomSingle.Instanse.Next(newChannel.Left - (roomSize.X - channelWidth), newChannel.Left),
+                                    newChannel.Top - roomSize.Y,
+                                    roomSize.X,
+                                    roomSize.Y
+                                );
+                                break;
+                            case 1:
+                                newRoom = new Rectangle(
+                                    newChannel.Right,
+                                    RandomSingle.Instanse.Next(newChannel.Top - (roomSize.Y - channelWidth), newChannel.Top),
+                                    roomSize.X,
+                                    roomSize.Y
+                                );
+                                break;
+                            case 2:
+                                newRoom = new Rectangle(
+                                    RandomSingle.Instanse.Next(newChannel.Left - (roomSize.X - channelWidth), newChannel.Left),
+                                    newChannel.Bottom,
+                                    roomSize.X,
+                                    roomSize.Y
+                                );
+                                break;
+                            case 3:
+                                newRoom = new Rectangle(
+                                    newChannel.Left - roomSize.X,
+                                    RandomSingle.Instanse.Next(newChannel.Top - (roomSize.Y - channelWidth), newChannel.Top),
+                                    roomSize.X,
+                                    roomSize.Y
+                                );
+                                break;
+                        }
+
+                        if (acceptedRooms.Any(r => r.Intersects(newRoom)) 
+                            || acceptedChannels.Any(c => c.Intersects(newRoom))
+                            || newRoom.Top < levelBounds.Top
+                            || newRoom.Bottom > levelBounds.Bottom
+                            || newRoom.Left < levelBounds.Left
+                            || newRoom.Right > levelBounds.Right)
+                        {
+                            trysCount++;
+                            continue;
+                        }
+
+                        trysCount = 0;
+                        successCount++;
+
+                        rooms.Enqueue(newRoom);
+                        acceptedChannels.AddLast(newChannel);
+                        acceptedRooms.AddLast(newRoom);
+                    }
+                }
+            }
+
+            foreach (Rectangle room in acceptedRooms)
+            {
+                FillRectangle(level, "testAtlas", new Color(
+                    RandomSingle.Instanse.Next(0, 255),
+                    RandomSingle.Instanse.Next(0, 255),
+                    RandomSingle.Instanse.Next(0, 255)
+                ), room, 1);
+            }
+
+            foreach (Rectangle channel in acceptedChannels)
+            {
+                FillRectangle(level, "testAtlas", new Color(
+                    RandomSingle.Instanse.Next(0, 255),
+                    RandomSingle.Instanse.Next(0, 255),
+                    RandomSingle.Instanse.Next(0, 255)
+                ), channel, 1);
             }
         }
     }
