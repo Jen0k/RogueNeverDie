@@ -29,6 +29,8 @@ namespace RogueNeverDie
         protected StateManager _stateManager;
         protected ResourseLoader _resourseLoader;
         protected Commander _commander;
+        protected InformationPanel _informationPanel;
+        protected FPSCounter _fpsCounter;
 
         protected SpriteFont commonFont;
 
@@ -99,8 +101,18 @@ namespace RogueNeverDie
             _stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing,
                 new Dictionary<string, object> { { "gameWindow", Window } });
 
-            testLevel = new Level(new Point(400, 400));
+            _fpsCounter = new FPSCounter();
+            _stateManager.AddState("fpscounter", _fpsCounter.Update, CommonStates.DrawNothing, StateStatus.Update,
+                new Dictionary<string, object>());
 
+            _informationPanel = new InformationPanel(_resourceManager.Load<SpriteFont>("console"));
+            _stateManager.AddState("infpanel", CommonStates.UpdateNonthing, _informationPanel.Draw, StateStatus.Draw,
+                new Dictionary<string, object>());
+
+            _fpsCounter.FramesPerSecond += _informationPanel.CreateIndicator("FPS");
+
+            testLevel = new Level(new Point(400, 400));
+            testLevel.SpriteDrawed += _informationPanel.CreateIndicator("Tiles drawed");
             for (int i = 0; i < 400; i++)
             {
                 for (int j = 0; j < 400; j++)

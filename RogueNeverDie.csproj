@@ -71,6 +71,8 @@
     <Compile Include="Engine\Factories\TileAtlas.cs" />
     <Compile Include="Engine\Factories\LevelAtlas.cs" />
     <Compile Include="Engine\GameObjects\PhantomSprite.cs" />
+    <Compile Include="Engine\InformationPanel.cs" />
+    <Compile Include="Engine\FPSCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

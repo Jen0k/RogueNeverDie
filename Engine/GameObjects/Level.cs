@@ -16,6 +16,8 @@ namespace RogueNeverDie.Engine.GameObjects
             _tileGrid = new Dictionary<Point, Tile>(_levelSize.X * _levelSize.Y);
         }
 
+        public event InformationPanel.ChangeHandler SpriteDrawed;
+
         public Vector2 CameraPosition {
             get
             {
@@ -81,7 +83,7 @@ namespace RogueNeverDie.Engine.GameObjects
 
 		public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Dictionary<string, object> parameters)
 		{
-			int testCounter = 0;
+            int spritesDrawed = 0;
 
 			Point tilesInScreen = 
 				new Point((int)Math.Ceiling(GameRogue.Graphics.PreferredBackBufferWidth / (double)Config.TileSize), 
@@ -93,12 +95,12 @@ namespace RogueNeverDie.Engine.GameObjects
 					if (_tileGrid.ContainsKey(keyPoint))
 					{
                         _tileGrid[keyPoint].Draw(spriteBatch, new Vector2((x - _cameraPosition.X) * Config.TileSize, (y - _cameraPosition.Y) * Config.TileSize));
-						testCounter++;
-					}
+                        spritesDrawed++;
+                    }
 				}
 			}
 
-			GameRogue.LogManager.SendMessage(String.Format("Tiles drawed: {0}", testCounter));
+            SpriteDrawed(spritesDrawed);
 		}
 	}
 }
