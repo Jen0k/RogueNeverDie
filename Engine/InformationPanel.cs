@@ -13,7 +13,7 @@ namespace RogueNeverDie.Engine
             this.FontColor = Color.Blue;
             this.DrawDepth = DrawDepth;
 
-            _indicatorNames = new Dictionary<ChangeHandler, string>();
+            _indicatorHandlers = new Dictionary<string, ChangeHandler>();
             _indicatorValues = new Dictionary<ChangeHandler, object>();
         }
 
@@ -24,24 +24,43 @@ namespace RogueNeverDie.Engine
         public Color FontColor;
         public float DrawDepth;
 
-        protected Dictionary<ChangeHandler, string> _indicatorNames;
+        protected Dictionary<string, ChangeHandler> _indicatorHandlers;
         protected Dictionary<ChangeHandler, object> _indicatorValues;
 
         public ChangeHandler CreateIndicator(string name)
         {
-            if (_indicatorNames.ContainsValue(name))
+            if (_indicatorHandlers.ContainsKey(name))
             {
-                throw new Exception("Параметр с таким именем уже наблюдается!");
+                throw new Exception("Индикатор с таким именем уже создан!");
             }
 
             ChangeHandler handler = null;
             handler = delegate (object value)
             {
+                if (!_indicatorValues.ContainsKey(handler))
+                {
+                    throw new Exception("Некорректно удалён индикатор! Удаление требуется совмещать с отпиской от наблюдаймого эвента!");
+                }
                 _indicatorValues[handler] = value;
             };
 
-            _indicatorValues.Add(handler, new object());
-            _indicatorNames.Add(handler, name);
+            _indicatorHandlers.Add(name, handler);
+            _indicatorValues.Add(handler, String.Empty);
+
+            return handler;
+        }
+
+        public ChangeHandler DeleteIndicator(string name)
+        {
+            if (!_indicatorHandlers.ContainsKey(name))
+            {
+                throw new Exception("Индикатор с таким именем не сущетсвует!");
+            }
+
+            ChangeHandler handler = _indicatorHandlers[name];
+
+            _indicatorHandlers.Remove(name);
+            _indicatorValues.Remove(handler);
 
             return handler;
         }
@@ -49,9 +68,9 @@ namespace RogueNeverDie.Engine
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Dictionary<string, object> parameters)
         {
             int lineNumber = 0;
-            foreach (KeyValuePair<ChangeHandler, string> indicator in _indicatorNames)
+            foreach (KeyValuePair<string, ChangeHandler> indicator in _indicatorHandlers)
             {
-                string line = String.Format("{0}: {1}", indicator.Value, _indicatorValues[indicator.Key].ToString());
+                string line = String.Format("{0}: {1}", indicator.Key, _indicatorValues[indicator.Value]);
                 Vector2 stringSize = Font.MeasureString(line);
 
                 spriteBatch.DrawString(Font, line, new Vector2(Padding, (stringSize.Y * lineNumber) + Padding),

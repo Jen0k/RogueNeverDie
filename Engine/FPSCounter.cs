@@ -21,9 +21,9 @@ namespace RogueNeverDie.Engine
         {
             _timeCounter += gameTime.ElapsedGameTime;
             _framesCounter++;
-            if (_timeCounter.Milliseconds >= 1000)
+            if (_timeCounter.TotalMilliseconds >= 1000)
             {
-                FramesPerSecond(_framesCounter);
+                FramesPerSecond?.Invoke(_framesCounter);
 
                 _timeCounter = TimeSpan.Zero;
                 _framesCounter = 0;

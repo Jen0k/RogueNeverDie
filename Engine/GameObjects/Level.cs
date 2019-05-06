@@ -100,7 +100,7 @@ namespace RogueNeverDie.Engine.GameObjects
 				}
 			}
 
-            SpriteDrawed(spritesDrawed);
-		}
-	}
+            SpriteDrawed?.Invoke(spritesDrawed);
+        }
+    }
 }

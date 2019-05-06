@@ -109,7 +109,8 @@ namespace RogueNeverDie
             _stateManager.AddState("infpanel", CommonStates.UpdateNonthing, _informationPanel.Draw, StateStatus.Draw,
                 new Dictionary<string, object>());
 
-            _fpsCounter.FramesPerSecond += _informationPanel.CreateIndicator("FPS");
+            _fpsCounter.FramesPerSecond += _informationPanel.CreateIndicator("Frames per second");
+            //_fpsCounter.FramesPerSecond -= _informationPanel.DeleteIndicator("Frames per second");
 
             testLevel = new Level(new Point(400, 400));
             testLevel.SpriteDrawed += _informationPanel.CreateIndicator("Tiles drawed");
