@@ -50,7 +50,7 @@ namespace RogueNeverDie
 
             if (keyboardState.IsKeyDown(Keys.A))
             {
-				GameRogue.LogManager.SendMessage("!!!!!!!");
+                ((GameRogue)parameters["game"]).ScreenMessager.SendMessage("!!!!!!!");
             }
 
             if (keyboardState.IsKeyDown(Keys.Z))

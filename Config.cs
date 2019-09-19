@@ -5,8 +5,6 @@ namespace RogueNeverDie
     {
         protected Config() { }
 
-		public const string CommonFont = "Fonts/Common";
-
         public const int TileSize = 32;
 
         public const float DepthBetweenSpriteLayers = 0.0000001f;

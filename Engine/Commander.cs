@@ -121,7 +121,7 @@ namespace RogueNeverDie.Engine
 							string thisTaskId = (string)parameters["stateId"];
 							List<string> turnUpAfter = (List<string>)parameters["turnUpAfter"];
                             
-							GameRogue.LogManager.SendMessage(_buffer.ToString());                     
+							((ScreenMessager)parameters["screenMessager"]).SendMessage(_buffer.ToString());                     
 							_buffer.Clear();
 
 							stateManager.SetStateStatus(thisTaskId, StateStatus.DoNothing);

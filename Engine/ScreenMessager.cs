@@ -5,11 +5,29 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RogueNeverDie.Engine
 {
-	public class LogManager : IStateUpdate, IStateDraw
+    public struct ScreenMessage
     {
-		public LogManager(Vector2 Position, float MessageSpacing, SpriteFont DefaultFont, Color DefaultColor, int DefaultLifeTime)
+        public ScreenMessage(string Text, SpriteFont Font, Color Color, DateTime DateCreated, TimeSpan LifeTimeTotal)
         {
-			_messageList = new List<LogMessage>();
+            this.Text = Text;
+            this.Font = Font;
+            this.Color = Color;
+            this.DateCreated = DateCreated;
+            this.LifeTimeTotal = LifeTimeTotal;
+        }
+
+        public string Text;
+        public SpriteFont Font;
+        public Color Color;
+        public DateTime DateCreated { get; }
+        public TimeSpan LifeTimeTotal;
+    }
+
+    public class ScreenMessager : IStateUpdate, IStateDraw
+    {
+		public ScreenMessager(Vector2 Position, float MessageSpacing, SpriteFont DefaultFont, Color DefaultColor, int DefaultLifeTime)
+        {
+			_messageList = new List<ScreenMessage>();
 			_elapsedLifeTimes = new List<TimeSpan>();
 			_defaultLifeTime = new TimeSpan(0, 0, 0, 0, DefaultLifeTime);
 
@@ -26,18 +44,18 @@ namespace RogueNeverDie.Engine
 		public int DefaultLifeTime { get => (int)_defaultLifeTime.TotalMilliseconds; set => _defaultLifeTime = new TimeSpan(0, 0, 0, 0, value); }
 
 		protected TimeSpan _defaultLifeTime;
-		protected List<LogMessage> _messageList;
+		protected List<ScreenMessage> _messageList;
 		protected List<TimeSpan> _elapsedLifeTimes;
         
 		public void SendError(string text) {
-			SendMessage(new LogMessage(String.Format("Ошибка: {0}", text), DefaultFont, Color.Red, DateTime.Now, _defaultLifeTime));
+			SendMessage(new ScreenMessage(String.Format("Ошибка: {0}", text), DefaultFont, Color.Red, DateTime.Now, _defaultLifeTime));
 		}
 
 		public void SendMessage(string text) {
-			SendMessage(new LogMessage(text, DefaultFont, DefaultColor, DateTime.Now, _defaultLifeTime));
+			SendMessage(new ScreenMessage(text, DefaultFont, DefaultColor, DateTime.Now, _defaultLifeTime));
 		}
 
-		public void SendMessage(LogMessage message) {
+		public void SendMessage(ScreenMessage message) {
 			_messageList.Add(message);
 			_elapsedLifeTimes.Add(TimeSpan.Zero);
 		}

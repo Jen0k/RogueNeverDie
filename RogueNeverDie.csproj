@@ -57,10 +57,7 @@
     <Compile Include="Engine\Common\WeightSet.cs" />
     <Compile Include="Engine\Common\WeightSetElement.cs" />
     <Compile Include="Engine\Common\RandomSingle.cs" />
-    <Compile Include="Engine\ResourseLoader.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Engine\LogManager.cs" />
-    <Compile Include="Engine\LogMessage.cs" />
     <Compile Include="Engine\State.cs" />
     <Compile Include="Engine\IState.cs" />
     <Compile Include="CommonStates.cs" />
@@ -73,6 +70,8 @@
     <Compile Include="Engine\GameObjects\PhantomSprite.cs" />
     <Compile Include="Engine\InformationPanel.cs" />
     <Compile Include="Engine\FPSCounter.cs" />
+    <Compile Include="Engine\ScreenMessager.cs" />
+    <Compile Include="Engine\WidgetManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

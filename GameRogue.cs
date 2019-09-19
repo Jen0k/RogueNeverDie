@@ -18,21 +18,19 @@ namespace RogueNeverDie
     public class GameRogue : Game
     {
         public static GraphicsDeviceManager Graphics;
-        public static LogManager LogManager;
 
         public static SpriteFactory SpriteFactory;
         public static TileFactory TileFactory;
         public static LevelFactory LevelFactory;
 
-        protected SpriteBatch _spriteBatch;
-        protected ResourceManager _resourceManager;
-        protected StateManager _stateManager;
-        protected ResourseLoader _resourseLoader;
-        protected Commander _commander;
-        protected InformationPanel _informationPanel;
-        protected FPSCounter _fpsCounter;
+        protected StateManager StateManager;
+        protected SpriteBatch SpriteBatch;
+        protected ResourceManager ResourceManager;
 
-        protected SpriteFont commonFont;
+        public ScreenMessager ScreenMessager;
+        protected Commander Commander;
+        protected InformationPanel InformationPanel;
+        protected FPSCounter FpsCounter;
 
         protected Level testLevel;
 
@@ -51,14 +49,16 @@ namespace RogueNeverDie
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here         
-            _stateManager = new StateManager();
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _stateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update,
+            StateManager = new StateManager();
+            ResourceManager = new ResourceManager();
+
+            StateManager.AddState("global", CommonStates.Global, CommonStates.DrawNothing, StateStatus.Update,
                 new Dictionary<string, object> { { "game", this } });
 
-            _stateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update,
-                new Dictionary<string, object> { { "graphics", Graphics } });
+            StateManager.AddState("testLoop", CommonStates.TestsUpdates, CommonStates.DrawNothing, StateStatus.Update,
+                new Dictionary<string, object> { {"game", this }, { "graphics", Graphics } });
 
             Graphics.PreferredBackBufferWidth = Config.ScreenWight;
             Graphics.PreferredBackBufferHeight = Config.ScreenHeight;
@@ -73,47 +73,37 @@ namespace RogueNeverDie
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            ResourceManager.LoadFromConfig(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory), Config.ResoursesRootIndex, Content);
 
-            // TODO: use this.Content to load your game content here
-            commonFont = Content.Load<SpriteFont>(Config.CommonFont);
+            ScreenMessager = new ScreenMessager(new Vector2(4, Graphics.PreferredBackBufferHeight - 32), 0, ResourceManager.Load<SpriteFont>("console"), Color.Green, 5000);
+            StateManager.AddState("logger", ScreenMessager.Update, ScreenMessager.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
 
-            if (LogManager == null)
+            Commander = new Commander(ResourceManager.Load<SpriteFont>("console"));
+            StateManager.AddState("commander", Commander.Update, Commander.Draw, StateStatus.DoNothing,
+                new Dictionary<string, object> { { "screenMessager", ScreenMessager }, { "gameWindow", Window } });
+
+            FpsCounter = new FPSCounter();
+            StateManager.AddState("fpscounter", FpsCounter.Update, CommonStates.DrawNothing, StateStatus.Update,
+                new Dictionary<string, object>());
+
+            InformationPanel = new InformationPanel(ResourceManager.Load<SpriteFont>("console"));
+            StateManager.AddState("infpanel", CommonStates.UpdateNonthing, InformationPanel.Draw, StateStatus.Draw,
+                new Dictionary<string, object>());
+
+            if (SpriteFactory == null) 
             {
-                LogManager = new LogManager(new Vector2(4, Graphics.PreferredBackBufferHeight - 32), 0, commonFont, Color.Green, 5000);
-
-                _stateManager.AddState("logger", LogManager.Update, LogManager.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+                SpriteFactory = new SpriteFactory(ResourceManager);
+                StateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
+                    new Dictionary<string, object>());
             }
+            if (TileFactory == null) { TileFactory = new TileFactory(ResourceManager, SpriteFactory); }
+            if (LevelFactory == null) { LevelFactory = new LevelFactory(ResourceManager, TileFactory); }
 
-            _resourceManager = new ResourceManager();
-
-            _resourseLoader = new ResourseLoader(Path.Combine(Environment.CurrentDirectory, Content.RootDirectory));
-            _resourseLoader.LoadFromConfig(Config.ResoursesRootIndex, _resourceManager, Content);
-
-            SpriteFactory = new SpriteFactory(_resourceManager);
-            _stateManager.AddState("updateSprites", SpriteFactory.Update, CommonStates.DrawNothing, StateStatus.Update,
-                new Dictionary<string, object>());
-            TileFactory = new TileFactory(_resourceManager, SpriteFactory);
-            LevelFactory = new LevelFactory(_resourceManager, TileFactory);
-
-            _commander = new Commander(_resourceManager.Load<SpriteFont>("console"));
-            _stateManager.AddState("commander", _commander.Update, _commander.Draw, StateStatus.DoNothing,
-                new Dictionary<string, object> { { "gameWindow", Window } });
-
-            _fpsCounter = new FPSCounter();
-            _stateManager.AddState("fpscounter", _fpsCounter.Update, CommonStates.DrawNothing, StateStatus.Update,
-                new Dictionary<string, object>());
-
-            _informationPanel = new InformationPanel(_resourceManager.Load<SpriteFont>("console"));
-            _stateManager.AddState("infpanel", CommonStates.UpdateNonthing, _informationPanel.Draw, StateStatus.Draw,
-                new Dictionary<string, object>());
-
-            _fpsCounter.FramesPerSecond += _informationPanel.CreateIndicator("Frames per second");
-            //_fpsCounter.FramesPerSecond -= _informationPanel.DeleteIndicator("Frames per second");
+            FpsCounter.FramesPerSecond += InformationPanel.CreateIndicator("Frames per second");
+            //FpsCounter.FramesPerSecond -= InformationPanel.DeleteIndicator("Frames per second");
 
             testLevel = new Level(new Point(400, 400));
-            testLevel.SpriteDrawed += _informationPanel.CreateIndicator("Tiles drawed");
+            testLevel.SpriteDrawed += InformationPanel.CreateIndicator("Tiles drawed");
             for (int i = 0; i < 400; i++)
             {
                 for (int j = 0; j < 400; j++)
@@ -128,7 +118,7 @@ namespace RogueNeverDie
 
             LevelFactory.GenerateNonRegularDungeon(testLevel);
 
-            _stateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
+            StateManager.AddState("testLevel", testLevel.Update, testLevel.Draw, StateStatus.UpdateAndDraw, new Dictionary<string, object>());
         }
 
         /// <summary>
@@ -147,7 +137,7 @@ namespace RogueNeverDie
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            _stateManager.UpdateStates(gameTime);
+            StateManager.UpdateStates(gameTime);
             base.Update(gameTime);
         }
 
@@ -160,9 +150,9 @@ namespace RogueNeverDie
             GraphicsDevice.Clear(Color.Cyan);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp);
-            _stateManager.DrawStates(_spriteBatch, gameTime);
-            _spriteBatch.End();
+            SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp);
+            StateManager.DrawStates(SpriteBatch, gameTime);
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }
